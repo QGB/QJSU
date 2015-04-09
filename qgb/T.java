@@ -479,11 +479,11 @@ public final class T {
 	 * default charset is GBK
 	 * 
 	 * @version 1.1
-	 * @see qgb.T#read_st(String, String)
+	 * @see qgb.T#readSt(String, String)
 	 */
-	public static String read_st(String ast_filename) {
+	public static String readSt(String ast_filename) {
 		BufferedInputStream bis;
-		bis = read_bis(ast_filename);
+		bis = readBis(ast_filename);
 		InputStreamReader isr = new InputStreamReader(bis);
 
 		// print("qgb"+isr.getEncoding());
@@ -509,12 +509,12 @@ public final class T {
 	 *            , The name of a supported
 	 *            {@linkplain java.nio.charset.Charset charset} ,"UTF-8" etc.
 	 * @see java.nio.charset.Charset
-	 * @see qgb.T#read_bis(String)
+	 * @see qgb.T#readBis(String)
 	 * @see java.lang.String#getBytes()
 	 */
-	public static String read_st(String fileName, String ast_CharsetName) {
+	public static String readSt(String fileName, String ast_CharsetName) {
 		try {
-			return new String(InputStreamToBytes(read_bis(fileName)),
+			return new String(InputStreamToBytes(readBis(fileName)),
 					ast_CharsetName);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -527,7 +527,7 @@ public final class T {
 	 * 
 	 * @see qgb.T.autoPath
 	 */
-	public static BufferedInputStream read_bis(String fileName) {
+	public static BufferedInputStream readBis(String fileName) {
 		File file = new File(autoPath(fileName));
 
 		FileInputStream fis = null;
@@ -544,7 +544,7 @@ public final class T {
 	/**2014-10-03 16:58:21
 	 * @see qgb.T.autoPath
 	 */
-	public static InputStream read_is(String fileName) {
+	public static InputStream readIs(String fileName) {
 		File file = new File(autoPath(fileName));
 
 		FileInputStream fis = null;
@@ -654,7 +654,7 @@ public final class T {
 	}
 
 	public static byte[] read_byteArray(String fileName) {
-		return InputStreamToBytes(read_bis(fileName));
+		return InputStreamToBytes(readBis(fileName));
 	}
 
 	public static void delFile(String string) {
@@ -739,7 +739,7 @@ public final class T {
 		stp="./src/";
 		stp=stp+aClass.getName().replace('.','/')+".java";
 		//print(stp);
-		return T.read_st(stp);
+		return T.readSt(stp);
 	}
 	public static String getCmdToRun() {
 		StackTraceElement[] yste = Thread.currentThread().getStackTrace();

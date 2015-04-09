@@ -13,12 +13,12 @@ public class HS{
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-    		T.msgbox();
+    		T.msgbox("title",T.getCmdToRun());
         HttpServer server = HttpServer.create(new InetSocketAddress(
                 "172.17.5.26", 8765), 0);
                 
         server.createContext("/",new MyResponseHandler());
-          server.createContext("/j.json",new Txt("json"));
+          server.createContext("/j.json",new Txt(T.readSt("j.txt")));
         server.setExecutor(null); // creates a default executor
         server.start();
 
