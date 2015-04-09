@@ -12,16 +12,21 @@ public class HS{
      * @param args
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
-    		T.msgbox("title",T.getCmdToRun());
-        HttpServer server = HttpServer.create(new InetSocketAddress(
-                "172.17.5.26", 8765), 0);
+    public static void main(String[] args){
+    		//T.msgbox("title",T.getCmdToRun());
+    		try{
+        	HttpServer server = HttpServer.create(new InetSocketAddress(
+                "0.0.0.0", 8888), 0);
                 
-        server.createContext("/",new MyResponseHandler());
-          server.createContext("/j.json",new Txt(T.readSt("j.txt")));
-        server.setExecutor(null); // creates a default executor
-        server.start();
-
+        	server.createContext("/",new Txt("2"));
+        	
+        	//server.createContext("/j.json",new Txt("1"));
+        	server.setExecutor(null); // creates a default executor
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
+				//T.msgbox();
+				T.print("end");
     }
     
     public static class Txt implements HttpHandler {
@@ -43,12 +48,12 @@ public class HS{
         }
     }    
     
-    public static class MyResponseHandler implements HttpHandler {
+    public static class F implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
             //针对请求的处理部分     
             //返回请求响应时，遵循HTTP协议  
-            String responseString = "<font color='#ff0000'>Hello! This a HttpServer!</font>"; 
+            String responseString = "00000000098";//T.readSt("j.txt"); 
             //设置响应头  
             httpExchange.sendResponseHeaders(200, responseString.length());    
             OutputStream os = httpExchange.getResponseBody();    
