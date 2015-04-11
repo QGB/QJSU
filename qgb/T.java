@@ -671,9 +671,7 @@ public final class T {
 	}
 
 	public static void setProxy(String asIP, String asPort) {
-		// ,锟斤拷锟斤拷锟斤拷锟絁AVA锟皆达拷拇锟斤拷?锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷,锟斤拷htmlunit锟斤拷锟斤拷锟斤拷虏锟斤拷锟叫э拷锟斤拷锟斤拷锟斤拷约锟斤拷锟斤拷锟�
 		System.getProperties().setProperty("proxySet", "true");
-		// 锟斤拷锟斤拷锟斤拷茫锟街灰拷锟斤拷锟絀P锟酵达拷锟斤拷丝锟斤拷锟饺�锟斤拷锟筋不锟斤拷锟斤拷也锟斤拷锟斤拷
 		System.getProperties().setProperty("http.proxyHost", asIP);
 		System.getProperties().setProperty("http.proxyPort", asPort);
 	}
@@ -691,6 +689,18 @@ public final class T {
 		}
 	}
 
+	public static void setErrStream(String ast) {
+		try {
+			PrintStream ps = new PrintStream(autoPath(ast),
+					CharsetName.GST_UTF8);
+			System.setErr(ps);
+		} catch (FileNotFoundException e) {
+			T.error(e, ast + " Not Found");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void resetOutStream() {
 		resetOutStream(true, CharsetName.GST_UTF8);
 	}
