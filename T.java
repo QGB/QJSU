@@ -16,7 +16,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -27,122 +29,139 @@ import javax.swing.JOptionPane;
 
 import qgb.file.F;
 import qgb.text.QText;
-/**QGB's java basic method**/
+
+/** QGB's java basic method **/
 public final class T {
 	public final static String gstTestPath = "D:/test/";
+	public final static String gstEclipseA = "._abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public final static String gsOneLineTryCatch= "try {prep.close();} catch (SQLException e) {e.printStackTrace();}";
 	/****/
-	private T() {throw new Error("Don't let anyone instantiate this class!");}
+	private T() {
+		throw new Error("Don't let anyone instantiate this class!");
+	}
+
 	// /////////////////////////////////////////////////////////
 	public static void main(String[] args) {
 		T.print();
-		//getSource(aClass)
-		//T.print(min(1, 23,4 ,87,32,324,234,2,324,423434,0,-4,5));
+		// getSource(aClass)
+		// T.print(min(1, 23,4 ,87,32,324,234,2,324,423434,0,-4,5));
 		T.beginKeepTime();
 		for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE; i++) {
-			//min(1, 2);
-			//min(1, 2, 3);
-			//min(1, 23,4 ,87,32,324,234,2,324,423434,0,-4,5);
+			// min(1, 2);
+			// min(1, 2, 3);
+			// min(1, 23,4 ,87,32,324,234,2,324,423434,0,-4,5);
 		}
 		T.endKeepTime(true);
-		//T.write("t.bin", "ast_text", CharsetName.GST_GBK);
-		//getSource(T.class);
-		//print("java.awt.EventDispatchThread.pumpEvents(java.awt.event.ActionEvent[ACTION_PERFORMED,cmd=,when=14".length());
+		// T.write("t.bin", "ast_text", CharsetName.GST_GBK);
+		// getSource(T.class);
+		// print("java.awt.EventDispatchThread.pumpEvents(java.awt.event.ActionEvent[ACTION_PERFORMED,cmd=,when=14".length());
 	}
+
 	// ///////////////////////////////////////////////////////
-	private static long glTimer=-1;
-	/**unit: ms</br>
-	 * return true:Success! if the method is called firstly 
-	 * or you had been call endKeepTime() recently.</br>
-	 * return false:Fail!.
+	private static long glTimer = -1;
+
+	/**
+	 * unit: ms</br> return true:Success! if the method is called firstly or you
+	 * had been call endKeepTime() recently.</br> return false:Fail!.
 	 * **/
 	public static boolean beginKeepTime() {
-		if (glTimer<0) {
-			glTimer=System.currentTimeMillis();
+		if (glTimer < 0) {
+			glTimer = System.currentTimeMillis();
 			return true;
 		}
 		return false;
-		
+
 	}
+
 	public static long endKeepTime() {
-		long lr=System.currentTimeMillis()-glTimer;
-		glTimer=-1;
+		long lr = System.currentTimeMillis() - glTimer;
+		glTimer = -1;
 		return lr;
-		
+
 	}
+
 	public static long endKeepTime(boolean abPrint) {
-		long lr=System.currentTimeMillis()-glTimer;
-		glTimer=-1;
+		long lr = System.currentTimeMillis() - glTimer;
+		glTimer = -1;
 		if (abPrint) {
-			print("Taking %s ms|%s",lr,getCurrentMethod().getName());
+			print("Taking %s ms|%s", lr, getCurrentMethod().getName());
 		}
 		return lr;
 	}
-	/**Current class
-	 * fixed at 2014-09-24 19:36:50**/
+
+	/**
+	 * Current class fixed at 2014-09-24 19:36:50
+	 **/
 	public static Class<?> getCurrentClass() {
 		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
-		if (yste.length<2) {
+		if (yste.length < 2) {
 			return null;
 		}
-		/**getCurrentClass**/
-		String str="";
+		/** getCurrentClass **/
+		String str = "";
 		for (int i = 0; i < yste.length; i++) {
-			if(yste[i].getMethodName().equals("getCurrentClass")){
+			if (yste[i].getMethodName().equals("getCurrentClass")) {
 				try {
-					return Class.forName(yste[i+1].getClassName());
-				} catch (ClassNotFoundException e) {	e.printStackTrace();}
-			}
-		}
-		return null;
-	}
-//	public static String getCurrentClassName() {
-//		return getCurrentClass().getName();
-//	}
-	/**TODO:锟睫凤拷锟斤拷锟斤拷锟斤拷胤锟斤拷锟�*/
-	public static Method getCurrentMethod() {
-		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
-		if (yste.length<2) {
-			return null;
-		}
-		/**getMethodName**/
-		String str="";
-		for (int i = 0; i < yste.length; i++) {
-			if(yste[i].getMethodName().equals("getCurrentMethod")){
-				Class<?> cC=null;
-				try {
-					cC=Class.forName(yste[i+1].getClassName());
-				} catch (ClassNotFoundException e) {	e.printStackTrace();}
-				Method[] ym=cC.getMethods();
-				str= yste[i+1].toString();
-				str=str.substring(0, str.lastIndexOf('('));
-//				try {
-//					T.print(cC.getMethod(str, null));
-//				} catch (Exception e) {	e.printStackTrace();	}
-				//T.print(str);
-				for (int j = 0; j < ym.length; j++) {
-					if (str.endsWith(ym[j].getName())){
-						return ym[j];
-						//T.msgbox(str);
-					}
-					//T.print(ym[j].getName());
-					//T.print(ym[i].);
+					return Class.forName(yste[i + 1].getClassName());
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
 				}
 			}
 		}
 		return null;
 	}
+
+	// public static String getCurrentClassName() {
+	// return getCurrentClass().getName();
+	// }
+	/** TODO:睫凤胤� */
+	public static Method getCurrentMethod() {
+		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
+		if (yste.length < 2) {
+			return null;
+		}
+		/** getMethodName **/
+		String str = "";
+		for (int i = 0; i < yste.length; i++) {
+			if (yste[i].getMethodName().equals("getCurrentMethod")) {
+				Class<?> cC = null;
+				try {
+					cC = Class.forName(yste[i + 1].getClassName());
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				Method[] ym = cC.getMethods();
+				str = yste[i + 1].toString();
+				str = str.substring(0, str.lastIndexOf('('));
+				// try {
+				// T.print(cC.getMethod(str, null));
+				// } catch (Exception e) { e.printStackTrace(); }
+				// T.print(str);
+				for (int j = 0; j < ym.length; j++) {
+					if (str.endsWith(ym[j].getName())) {
+						return ym[j];
+						// T.msgbox(str);
+					}
+					// T.print(ym[j].getName());
+					// T.print(ym[i].);
+				}
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Thread safe</p>
 	 * **/
 	public static synchronized String argsError(Object... args)
 			throws IllegalArgumentException {
-		StackTraceElement[] yste=Thread.currentThread().getStackTrace();
-		if (yste.length<2) {
+		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
+		if (yste.length < 2) {
 			return null;
 		}
-		/**锟斤拷锟斤拷诙锟斤拷锟�*/
-		String str = yste[yste.length - 1-1].toString();
-		//print(yste);
+		/** 诙� */
+		String str = yste[yste.length - 1 - 1].toString();
+		// print(yste);
 		StringBuilder sb = new StringBuilder("\n");
 		sb.append(str.substring(0, str.lastIndexOf('(') + 1));
 		int im = args.length;
@@ -183,6 +202,7 @@ public final class T {
 	public static void printEclipse() {
 		print("Max console line char length=96");
 	}
+
 	// /////////////////////////////////////////////////////////
 	public static String getCurrentThreadName() {
 		return Thread.currentThread().getName();
@@ -224,16 +244,18 @@ public final class T {
 	 * @return the <code>String</code> property
 	 * @see java.awt.GraphicsEnvironment.isHeadless
 	 */
-	public static String msgbox(Object message){
+	public static String msgbox(Object message) {
 		return JOptionPane.showInputDialog(message);
 	}
-	
-	public static String msgbox(String format, Object... args){
+
+	public static String msgbox(String format, Object... args) {
 		return JOptionPane.showInputDialog(QText.format(format, args));
 	}
+
 	public static void msgbox() {
 		msgbox("");
 	}
+
 	// /////////////////////////////////
 	public static void notify(String ast_text) {
 		Throwable taa = new Throwable();
@@ -246,32 +268,115 @@ public final class T {
 
 	// ////////////////////////////////////////////////////////
 	public static String getCurrentTime() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 锟斤拷锟斤拷锟斤拷锟节革拷式
-		// System.out.println(df.format(new Date()));// new Date()为锟斤拷取锟斤拷前系统时锟斤拷
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 节革式
+		// System.out.println(df.format(new Date()));// new
+		// Date()为取前系统时
 		return df.format(new Date());
 	}
 
-	/////////// Print /////////////////////////////
-	/**Print, NO breakline*/
+	// ///////// Print /////////////////////////////
+	public static boolean printInnerSt(Object ae) {
+		Field[] yf = ae.getClass().getDeclaredFields();
+		boolean bool = false;
+		for (int i = 0; i < yf.length; i++) {
+			// T.msgbox(yf[i].toString());
+
+			yf[i].setAccessible(true);
+
+			if (String.class == yf[i].getType()) {
+				String sta = null;
+				try {
+					sta = (String) yf[i].get(ae);
+				} catch (IllegalArgumentException e1) {
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					e1.printStackTrace();
+				}
+				if (sta != null) {
+					T.print("%s=\"%s\"", "o." + yf[i].getName(), sta);
+					bool = true;
+				}
+			}
+		}
+		return bool;
+	}
+
+	public static boolean printDetaills(Object ae, String astName) {
+		Field[] yf = ae.getClass().getDeclaredFields();
+		boolean bool=false;
+		for (int i = 0; i < yf.length; i++) {
+			//T.msgbox(yf[i].toString());
+
+			yf[i].setAccessible(true);
+	
+			Object object = null;
+			try {
+				object = yf[i].get(ae);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				continue;
+			}
+			if (object == null) {
+				continue;
+			}
+			if (String.class == yf[i].getType()) {
+				String sta = null;
+				try {
+					sta = (String) yf[i].get(ae);
+				} catch (IllegalArgumentException e1) {
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					e1.printStackTrace();
+				}
+				if (sta != null) {
+					T.print("%s=\"%s\"", astName + "." + yf[i].getName(), sta);
+					bool=true;
+				}
+				/** TODO 无法输出null值 **/
+				// else {
+				// T.print("%s=null", astName + "." + yf[i].getName());
+				// }
+				continue;
+			} else {
+//				if (Entry.class == yf[i].getType()) {
+//					continue;
+//				}
+				if (printDetaills(object, astName + "." + yf[i].getName())==false) {
+					String stmp=object.toString();
+//					if (stmp.startsWith("mh.struct.")) {
+//						continue;
+//					}
+					T.print("%s.toString()=\"%s\"", astName + "." + yf[i].getName(),stmp);
+				} 
+			}
+		}
+		return bool;
+	}
+
+	/** Print, NO breakline */
 	public static void pt(Object aoa) {
 		System.out.print(aoa);
 	}
-	/**Print Thread,Class,Time**/
+
+	/** Print Thread,Class,Time **/
 	public static void print() {
 		print(getCurrentThreadName());
 		print(getCurrentClass().getName());
 		print(getCurrentTime());
 		print(getCmdToRun());
 	}
+
 	public static void print(Object aoa) {
 		System.out.println(aoa);
 	}
-	
+
 	public static void print(Collection<?> aoa) {
-		for (Object o:aoa) {
+		for (Object o : aoa) {
 			System.out.println(o.toString());
 		}
 	}
+
 	public static void print(int[] ayi) {
 		if (ayi == null) {
 			return;
@@ -284,6 +389,7 @@ public final class T {
 			print(stFormat, i, ayi[i]);
 		}
 	}
+
 	public static void print(char[] ayi) {
 		if (ayi == null) {
 			return;
@@ -296,6 +402,7 @@ public final class T {
 			print(stFormat, i, ayi[i]);
 		}
 	}
+
 	/**
 	 * modified at 2014-10-21 20:38:31
 	 * **/
@@ -306,33 +413,37 @@ public final class T {
 		if (ayo.length > 0) {
 			T.print("%s[%d]", ayo[0].getClass().getName(), ayo.length);
 		}
-		String stFormat = "[%-" + get_intDigit(ayo.length-1) + "s]=%s";
+		String stFormat = "[%-" + get_intDigit(ayo.length - 1) + "s]=%s";
 		for (int i = 0; i < ayo.length; i++) {
 			print(stFormat, i, ayo[i]);
 		}
 	}
+
 	/**
-	 * Fixed at 2014-08-12 20:02:29**/
+	 * Fixed at 2014-08-12 20:02:29
+	 **/
 	public static void print(String ast_text, int ai_size) {
 		if (ast_text.contains("%")) {
-			/**void qgb.T.print(String format, Object... args)**/
-			T.print(ast_text+"%s", ai_size,"");
-			//T.msgbox();
+			/** void qgb.T.print(String format, Object... args) **/
+			T.print(ast_text + "%s", ai_size, "");
+			// T.msgbox();
 			return;
 		}
-		if (ai_size>ast_text.length()) {
-			ai_size=ast_text.length();
+		if (ai_size > ast_text.length()) {
+			ai_size = ast_text.length();
 		}
 		System.out.println(ast_text.subSequence(0, ai_size));
 	}
+
 	/**
 	 * fixed at 2014-07-12 22:06:13|auto new line
 	 * **/
 	public static void print(String format, Object... args) {
 		System.out.printf(format + "\n", args);
 	}
-	///////////// Print End //////////////////////
-	
+
+	// /////////// Print End //////////////////////
+
 	public static int get_intDigit(int ai) {
 		return String.valueOf(ai).length();
 	}
@@ -369,15 +480,16 @@ public final class T {
 		// print(cst + "|" + gstTestPath + ast_filename);
 	}
 
-	/**锟斤拷锟絘st_filename锟斤拷 .锟斤拷头锟斤拷锟斤拷为锟斤拷前路锟斤拷
-	 * </p> modified at 2014-07-23 02:08:51 modified at 2014-07-31 03:00:19
-	 *  TODO:锟斤拷mac os 锟斤拷锟铰凤拷锟街э拷锟斤拷锟斤拷锟斤拷锟�
+	/**
+	 * 絘st_filename .头为前路 </p> modified at 2014-07-23
+	 * 02:08:51 modified at 2014-07-31 03:00:19 TODO:mac os
+	 * 铰凤街э�
 	 **/
 	public static String autoPath(String ast_filename) {
 		if (ast_filename.startsWith(".")) {
 			return ast_filename;
 		}
-		if (isFullPath(ast_filename)) {// 锟斤拷锟斤拷锟侥硷拷锟斤拷锟角凤拷为全路锟斤拷
+		if (isFullPath(ast_filename)) {// 侥硷角凤为全路
 			makeDirs(ast_filename);
 			return ast_filename;
 		} else {
@@ -410,7 +522,7 @@ public final class T {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		//T.print(getCurrentMethod());
+		// T.print(getCurrentMethod());
 	}
 
 	/**
@@ -430,10 +542,10 @@ public final class T {
 				// + ",InputStream)");
 			}
 
-			// 锟斤拷锟斤拷锟斤拷锟斤拷锟叫碉拷锟斤拷锟饺拷锟叫达拷锟�
+			// 叫碉饺叫达�
 			bos.flush();
 
-			// 锟截憋拷锟斤拷
+			// 截憋
 			// bufferedInputStream.close();
 			bos.close();
 		} catch (FileNotFoundException e) {
@@ -453,7 +565,7 @@ public final class T {
 	public static void makeDirs(String fileName) {
 		File f = new File(fileName);
 		// T.print("%s isD %b",fileName,F.isDirectory(fileName));
-		/** 锟斤拷锟斤拷使锟斤拷File.isDirectory()锟叫讹拷一锟斤拷锟斤拷锟斤拷锟节碉拷锟侥硷拷锟角凤拷为目录 **/
+		/** 使File.isDirectory()叫讹一节碉侥硷角凤为目录 **/
 		if (F.isDirectory(fileName) == false) {
 			f = f.getParentFile();
 			if (f == null) {
@@ -541,11 +653,14 @@ public final class T {
 		return bis;
 	}
 
-	/**2014-10-03 16:58:21
-	 * @throws FileNotFoundException 
+	/**
+	 * 2014-10-03 16:58:21
+	 * 
+	 * @throws FileNotFoundException
 	 * @see qgb.T.autoPath
 	 */
-	public static InputStream readIs(String fileName) throws FileNotFoundException {
+	public static InputStream readIs(String fileName)
+			throws FileNotFoundException {
 		File file = new File(autoPath(fileName));
 
 		FileInputStream fis = null;
@@ -554,10 +669,10 @@ public final class T {
 			return fis;
 		} catch (FileNotFoundException e) {
 			throw e;
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
-	
+
 	public static boolean isFullPath(String fileName) {
 		return (fileName.contains(":"));
 	}
@@ -610,7 +725,7 @@ public final class T {
 	}
 
 	// //////////////////////////////////////////////////////////////////
-	/**if parameter is null then return null**/
+	/** if parameter is null then return null **/
 	public static byte[] InputStreamToBytes(InputStream ais) {
 		if (ais == null) {
 			return null;
@@ -633,11 +748,11 @@ public final class T {
 	}
 
 	// ////////////////////////////////////////////////////////////////
-	/**if parameter is null then return null**/
+	/** if parameter is null then return null **/
 	public static InputStream BytesToInputStream(byte[] b) {
-		if (b==null) {
+		if (b == null) {
 			return null;
-		}else {
+		} else {
 			return new ByteArrayInputStream(b);
 		}
 	}
@@ -662,10 +777,10 @@ public final class T {
 		File file = new File(string);
 		if (file.exists()) {
 			if (file.delete() == false) {
-				T.notify("T.delFile error锟斤拷 file is not  deleted!");
+				T.notify("T.delFile error file is not  deleted!");
 			}
 		} else {
-			T.notify("T.delFile error锟斤拷 file is not found!");
+			T.notify("T.delFile error file is not found!");
 		}
 
 	}
@@ -700,93 +815,113 @@ public final class T {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void resetOutStream() {
 		resetOutStream(true, CharsetName.GST_UTF8);
 	}
+
 	public static void resetOutStream(String asCharsetName) {
 		resetOutStream(true, asCharsetName);
 	}
-	public static void resetOutStream(boolean bFlush,String asCharsetName) {
+
+	public static void resetOutStream(boolean bFlush, String asCharsetName) {
 		try {
-			System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out),
-			bFlush,asCharsetName));
+			System.setOut(new PrintStream(new FileOutputStream(
+					FileDescriptor.out), bFlush, asCharsetName));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 	}
+
 	/*********** setOutStream End ********************/
-	/**The method max(int, int) in the type T is not applicable for the arguments (int, null)**/
+	/**
+	 * The method max(int, int) in the type T is not applicable for the
+	 * arguments (int, null)
+	 **/
 	public static int max(int aia, int aib) {
 		if (aia > aib) {
 			return aia;
 		}
 		return aib;
 	}
-	/**Efficient*/
+
+	/** Efficient */
 	public static int min(int aia, int aib) {
 		if (aia < aib) {
 			return aia;
 		}
 		return aib;
 	}
-	/**Efficient*/
-	public static int min(int i, int j,int k) {
+
+	/** Efficient */
+	public static int min(int i, int j, int k) {
 		return min(min(i, j), min(j, k));
 	}
-	
+
 	public static int min(int aia, int... ayi) {
-		if(ayi.length<1)return aia;
-		if (aia<ayi[0])ayi[0]=aia;
+		if (ayi.length < 1)
+			return aia;
+		if (aia < ayi[0])
+			ayi[0] = aia;
 		for (int i = 0; i < ayi.length; i++) {
-			if(ayi[i]<ayi[0])ayi[0]=ayi[i];
+			if (ayi[i] < ayi[0])
+				ayi[0] = ayi[i];
 		}
 		return ayi[0];
 	}
-	
+
 	public static String getSourcePath(Class<?> aClass) {
-		String stp=aClass.getProtectionDomain().getCodeSource().getLocation().toString();
-		if (stp.endsWith("/bin/")==false)return "Not Eclipse!";
-		stp="./src/";
-		stp=stp+aClass.getName().replace('.','/')+".java";
-		//print(stp);
+		String stp = aClass.getProtectionDomain().getCodeSource().getLocation()
+				.toString();
+		if (stp.endsWith("/bin/") == false)
+			return "Not Eclipse!";
+		stp = "./src/";
+		stp = stp + aClass.getName().replace('.', '/') + ".java";
+		// print(stp);
 		return stp;
 	}
-	/**支锟斤拷mac os锟斤拷windows**/
+
+	/** 支mac oswindows **/
 	public static String getSource(Class<?> aClass) {
-		String stp=aClass.getProtectionDomain().getCodeSource().getLocation().toString();
-		if (stp.endsWith("/bin/")==false)return "Not Eclipse!";
-		stp="./src/";
-		stp=stp+aClass.getName().replace('.','/')+".java";
-		//print(stp);
+		String stp = aClass.getProtectionDomain().getCodeSource().getLocation()
+				.toString();
+		if (stp.endsWith("/bin/") == false)
+			return "Not Eclipse!";
+		stp = "./src/";
+		stp = stp + aClass.getName().replace('.', '/') + ".java";
+		// print(stp);
 		return T.readSt(stp);
 	}
+
 	public static String getCmdToRun() {
 		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
-		if (yste.length<2) {
+		if (yste.length < 2) {
 			return null;
 		}
-		/**getCurrentClass**/
-		String str="";
+		/** getCurrentClass **/
+		String str = "";
 		Class<?> c = null;
 		for (int i = 0; i < yste.length; i++) {
-			if(yste[i].getMethodName().equals("getCmdToRun")){
+			if (yste[i].getMethodName().equals("getCmdToRun")) {
 				try {
-					c=Class.forName(yste[i+1].getClassName());
-					if (c!=null) {
+					c = Class.forName(yste[i + 1].getClassName());
+					if (c != null) {
 						break;
 					}
-				} catch (ClassNotFoundException e) {	e.printStackTrace();return "";}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+					return "";
+				}
 			}
 		}
-		if (c==null) {
-			T.notify("Can not Find class ????");;
+		if (c == null) {
+			T.notify("Can not Find class ????");
+			;
 			return "";
 		}
-		return ("java -cp "
-				+c.getClassLoader().getResource("").getPath()
-				+" "+c.getName());
-		
+		return ("java -cp " + c.getClassLoader().getResource("").getPath()
+				+ " " + c.getName());
+
 	}
 
 }
