@@ -98,7 +98,7 @@ public final class T {
 //	public static String getCurrentClassName() {
 //		return getCurrentClass().getName();
 //	}
-	/**TODO:�޷�������ط���**/
+	/**TODO:锟睫凤拷锟斤拷锟斤拷锟斤拷胤锟斤拷锟�*/
 	public static Method getCurrentMethod() {
 		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
 		if (yste.length<2) {
@@ -140,7 +140,7 @@ public final class T {
 		if (yste.length<2) {
 			return null;
 		}
-		/**����ڶ���**/
+		/**锟斤拷锟斤拷诙锟斤拷锟�*/
 		String str = yste[yste.length - 1-1].toString();
 		//print(yste);
 		StringBuilder sb = new StringBuilder("\n");
@@ -246,8 +246,8 @@ public final class T {
 
 	// ////////////////////////////////////////////////////////
 	public static String getCurrentTime() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// �������ڸ�ʽ
-		// System.out.println(df.format(new Date()));// new Date()Ϊ��ȡ��ǰϵͳʱ��
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 锟斤拷锟斤拷锟斤拷锟节革拷式
+		// System.out.println(df.format(new Date()));// new Date()为锟斤拷取锟斤拷前系统时锟斤拷
 		return df.format(new Date());
 	}
 
@@ -369,15 +369,15 @@ public final class T {
 		// print(cst + "|" + gstTestPath + ast_filename);
 	}
 
-	/**���ast_filename�� .��ͷ����Ϊ��ǰ·��
+	/**锟斤拷锟絘st_filename锟斤拷 .锟斤拷头锟斤拷锟斤拷为锟斤拷前路锟斤拷
 	 * </p> modified at 2014-07-23 02:08:51 modified at 2014-07-31 03:00:19
-	 *  TODO:��mac os ���·��֧��������
+	 *  TODO:锟斤拷mac os 锟斤拷锟铰凤拷锟街э拷锟斤拷锟斤拷锟斤拷锟�
 	 **/
 	public static String autoPath(String ast_filename) {
 		if (ast_filename.startsWith(".")) {
 			return ast_filename;
 		}
-		if (isFullPath(ast_filename)) {// �����ļ����Ƿ�Ϊȫ·��
+		if (isFullPath(ast_filename)) {// 锟斤拷锟斤拷锟侥硷拷锟斤拷锟角凤拷为全路锟斤拷
 			makeDirs(ast_filename);
 			return ast_filename;
 		} else {
@@ -430,10 +430,10 @@ public final class T {
 				// + ",InputStream)");
 			}
 
-			// ���������е����ȫ��д��
+			// 锟斤拷锟斤拷锟斤拷锟斤拷锟叫碉拷锟斤拷锟饺拷锟叫达拷锟�
 			bos.flush();
 
-			// �ر���
+			// 锟截憋拷锟斤拷
 			// bufferedInputStream.close();
 			bos.close();
 		} catch (FileNotFoundException e) {
@@ -453,7 +453,7 @@ public final class T {
 	public static void makeDirs(String fileName) {
 		File f = new File(fileName);
 		// T.print("%s isD %b",fileName,F.isDirectory(fileName));
-		/** ����ʹ��File.isDirectory()�ж�һ�������ڵ��ļ��Ƿ�ΪĿ¼ **/
+		/** 锟斤拷锟斤拷使锟斤拷File.isDirectory()锟叫讹拷一锟斤拷锟斤拷锟斤拷锟节碉拷锟侥硷拷锟角凤拷为目录 **/
 		if (F.isDirectory(fileName) == false) {
 			f = f.getParentFile();
 			if (f == null) {
@@ -662,18 +662,18 @@ public final class T {
 		File file = new File(string);
 		if (file.exists()) {
 			if (file.delete() == false) {
-				T.notify("T.delFile error�� file is not  deleted!");
+				T.notify("T.delFile error锟斤拷 file is not  deleted!");
 			}
 		} else {
-			T.notify("T.delFile error�� file is not found!");
+			T.notify("T.delFile error锟斤拷 file is not found!");
 		}
 
 	}
 
 	public static void setProxy(String asIP, String asPort) {
-		// ,�������JAVA�Դ�Ĵ��?����������,��htmlunit������²���Ч�������Լ�����
+		// ,锟斤拷锟斤拷锟斤拷锟絁AVA锟皆达拷拇锟斤拷?锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷,锟斤拷htmlunit锟斤拷锟斤拷锟斤拷虏锟斤拷锟叫э拷锟斤拷锟斤拷锟斤拷约锟斤拷锟斤拷锟�
 		System.getProperties().setProperty("proxySet", "true");
-		// ������ã�ֻҪ����IP�ʹ���˿���ȷ,�������Ҳ����
+		// 锟斤拷锟斤拷锟斤拷茫锟街灰拷锟斤拷锟絀P锟酵达拷锟斤拷丝锟斤拷锟饺�锟斤拷锟筋不锟斤拷锟斤拷也锟斤拷锟斤拷
 		System.getProperties().setProperty("http.proxyHost", asIP);
 		System.getProperties().setProperty("http.proxyPort", asPort);
 	}
@@ -733,7 +733,16 @@ public final class T {
 		}
 		return ayi[0];
 	}
-	/**֧��mac os��windows**/
+	
+	public static String getSourcePath(Class<?> aClass) {
+		String stp=aClass.getProtectionDomain().getCodeSource().getLocation().toString();
+		if (stp.endsWith("/bin/")==false)return "Not Eclipse!";
+		stp="./src/";
+		stp=stp+aClass.getName().replace('.','/')+".java";
+		//print(stp);
+		return stp;
+	}
+	/**支锟斤拷mac os锟斤拷windows**/
 	public static String getSource(Class<?> aClass) {
 		String stp=aClass.getProtectionDomain().getCodeSource().getLocation().toString();
 		if (stp.endsWith("/bin/")==false)return "Not Eclipse!";
