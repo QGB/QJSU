@@ -6,14 +6,13 @@ import java.util.regex.Pattern;
 
 import qgb.CharsetName;
 import qgb.T;
-import qgb.net.Get;
 
 public class Regex{
 	public static void main(String argus[]) throws Exception {
 	//test();
 	//T.print(getYst("\\w", "ast_text"));
 		//
-	String str=T.read_st("g.txt",CharsetName.GST_GB2312);
+	String str=T.readSt("g.txt",CharsetName.GST_GB2312);
 	T.write("g.txt.html", txtToHtml(str),CharsetName.GST_GB2312);
 	}
 	/************************************************************/
@@ -70,10 +69,10 @@ public class Regex{
 		* group()����ƥ�䵽�����ַ�  */
 		String st_url="http://dict.cn/mini.php?q=good";
 		//String st_t=" <span class=\"g b\">\nDefine      <span class=\"k\">\naspiration      </span>\n:    </span>\n    <object classi";
-		String st_t=Get.html(st_url);
+		String st_t="";//Get.html(st_url);
 		String st_re="(?<=<span class=\"k\">\\n)\\w*(?=\\s*</span>)";
 		T.print( get_first_text(st_re,st_t));
-		T.print(cst+"end");
+		T.print("end");
 		T.exit();
 		Pattern p=Pattern.compile(st_re);  
 		Matcher m=p.matcher(st_t);  

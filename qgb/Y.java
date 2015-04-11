@@ -9,11 +9,10 @@ import qgb.text.QText;
 public class Y {  
   
     public static void main(String [] args) {  
-    	AutoFindWords.main(null);
     	if (true) {
 			return;
 		}
-    	String stin=T.read_st("y.txt");
+    	String stin=T.readSt("y.txt");
     	//"char","Character"
     	String[][] yyc={{"boolean","Boolean"},{"byte","Byte"},{"char","Character"},
     			{"double","Double"},{"float","Float"},{"int","Integer"},{"long","Long"},{"short","Short"}};

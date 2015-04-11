@@ -15,11 +15,11 @@ public class SysClipboard {
 	}
 
 	// //////////////////////////////////////////////////////////
-	public static final Clipboard sysClip = Toolkit.getDefaultToolkit()
+	public static final Clipboard gCb = Toolkit.getDefaultToolkit()
 			.getSystemClipboard();
 
 	public static boolean isText() {
-		Transferable clipTf = sysClip.getContents(null);
+		Transferable clipTf = gCb.getContents(null);
 		if (clipTf.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
 				String ret = (String) clipTf.getTransferData(DataFlavor.stringFlavor);
@@ -33,15 +33,15 @@ public class SysClipboard {
 	}
 
 	/**
-	 * ´Ó¼ôÇÐ°å»ñµÃÎÄ×Ö¡£
+	 * ï¿½Ó¼ï¿½ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½
 	 */
 	public static String getText() {
 		String ret = "";
-		// »ñÈ¡¼ôÇÐ°åÖÐµÄÄÚÈÝ
-		Transferable clipTf = sysClip.getContents(null);
+		// ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð°ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
+		Transferable clipTf = gCb.getContents(null);
 
 		if (clipTf != null) {
-			// ¼ì²éÄÚÈÝÊÇ·ñÊÇÎÄ±¾ÀàÐÍ
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½
 			if (clipTf.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				try {
 					ret = (String) clipTf
@@ -56,7 +56,7 @@ public class SysClipboard {
 	}
 
 	/**
-	 * ½«×Ö·û´®¸´ÖÆµ½¼ôÇÐ°å¡£
+	 * ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½Ð°å¡£
 	 */
 	public static void setSysClipboardText(String writeMe) {
 		Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -65,7 +65,7 @@ public class SysClipboard {
 	}
 
 	/**
-	 * ´Ó¼ôÇÐ°å»ñµÃÍ¼Æ¬¡£
+	 * ï¿½Ó¼ï¿½ï¿½Ð°ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½
 	 */
 	public static Image getImageFromClipboard() throws Exception {
 		Clipboard sysc = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -78,7 +78,7 @@ public class SysClipboard {
 	}
 
 	/**
-	 * ¸´ÖÆÍ¼Æ¬µ½¼ôÇÐ°å¡£
+	 * ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Ð°å¡£
 	 */
 	public static void setClipboardImage(final Image image) {
 		Transferable trans = new Transferable() {

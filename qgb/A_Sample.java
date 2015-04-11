@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import mh.struct.Voice;
 import qgb.file.F;
-import qgb.media.MP3player;
-import qgb.net.Get;
 
 public class A_Sample {
 	public void main(String[] args) throws Exception {
@@ -63,7 +60,7 @@ public class A_Sample {
 				for (File file : files) {
 					if (file.isDirectory()) {
 						/*
-						 * �ݹ����
+						 * 锟捷癸拷锟斤拷锟�
 						 */
 						filelist.addAll(getFilesStringList(
 								file.getAbsolutePath(), astFileType));

@@ -542,9 +542,10 @@ public final class T {
 	}
 
 	/**2014-10-03 16:58:21
+	 * @throws FileNotFoundException 
 	 * @see qgb.T.autoPath
 	 */
-	public static InputStream readIs(String fileName) {
+	public static InputStream readIs(String fileName) throws FileNotFoundException {
 		File file = new File(autoPath(fileName));
 
 		FileInputStream fis = null;
@@ -552,9 +553,9 @@ public final class T {
 			fis = new FileInputStream(file);
 			return fis;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			throw e;
+			//e.printStackTrace();
 		}
-		return null;
 	}
 	
 	public static boolean isFullPath(String fileName) {

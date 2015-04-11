@@ -2,6 +2,9 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 import java.lang.*;
+
+import qgb.*;
+import qgb.text.QText;
 public class WS {
 	public static void main(String [] args){
 		int port;
@@ -18,7 +21,7 @@ public class WS {
 			while(true){
 				Socket socket=server_socket.accept();
 				System.out.println("New connection accepted"+socket.getInetAddress()+":"+socket.getPort());
-				//Õë¶ÔÌØ¶¨µÄÇëÇó´´½¨´¦Àí¸ÃÇëÇóµÄÏß³Ì
+				//é’ˆå¯¹ç‰¹å®šçš„è¯·æ±‚åˆ›å»ºå¤„ç†è¯¥è¯·æ±‚çš„çº¿ç¨‹
 				try{
 					httpRequestHandler request=new httpRequestHandler(socket);
 					Thread thread=new Thread(request);
@@ -35,66 +38,62 @@ public class WS {
 	}
 }
 
-//´¦ÀíÇëÇóµÄÏß³ÌÀà
+//å¤„ç†è¯·æ±‚çš„çº¿ç¨‹ç±»
 class httpRequestHandler implements Runnable{
-	
+	static int gi=0;
 	final static String CRLF="/r/n";
 	Socket socket;
 	InputStream input;
 	OutputStream output;
 	BufferedReader br;
-	//ÅĞ¶ÏÇëÇóµÄÎÄ¼şÀàĞÍÊÇ·ñÕıÈ·
+	//åˆ¤æ–­è¯·æ±‚çš„æ–‡ä»¶ç±»å‹æ˜¯å¦æ­£ç¡®
 	boolean fileType=true;
 	
-	//³õÊ¼»¯²ÎÊı
+	//åˆå§‹åŒ–å‚æ•°
 	public httpRequestHandler(Socket socket) throws Exception{
 		this.socket=socket;
 		this.input=socket.getInputStream();
 		this.output=socket.getOutputStream();
 		this.br=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
-	//Æô¶¯¸ÃÏß³Ì
+	//å¯åŠ¨è¯¥çº¿ç¨‹
 	public void run(){
 		try{
 			processRequest();
 		}
 		catch(Exception e){
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
-	//´¦ÀíÇëÇóµÄºËĞÄº¯Êı
-	private void processRequest() throws Exception{
+	//å¤„ç†è¯·æ±‚çš„æ ¸å¿ƒå‡½æ•°
+	private void processRequest(){
 		while(true){
-			String headerLine=br.readLine();
-			System.out.println("the client request is"+headerLine);
-			if(headerLine.equals(CRLF)||headerLine.equals(""))
+			String shl = null;
+			try {
+				shl = br.readLine();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			if(shl==null||shl.equals(CRLF)||shl.length()<1)
 				break;
-			StringTokenizer s=new StringTokenizer(headerLine);
+			
+			System.out.println("the client request is: "+shl);
+			StringTokenizer s=new StringTokenizer(shl);
 			String temp=s.nextToken();
 			if(temp.equals("GET")){
 				
 				String fileName=s.nextToken();
-				fileName="."+fileName;
-				FileInputStream fis=null;
+				fileName=fileName.substring(1, fileName.length());
+				InputStream fis=null;
 				boolean fileExists=true;
 				
-				if(!(fileName.endsWith(".htm")||fileName.endsWith(".html")))
-				{
-					this.fileType=false;
-					try{
-						fis=new FileInputStream("error.html");
-					}
-					catch(FileNotFoundException e){
-						fileExists=false;
-					}	
+				//if()
+				try{
+					fis=T.readIs(fileName);
 				}
-				else{
-					try{
-						fis=new FileInputStream(fileName);
-					}
-					catch(FileNotFoundException e){
-						fileExists=false;
-					}
+				catch(FileNotFoundException e){
+					e.printStackTrace();
+					fileExists=false;
 				}
 				
 				String serverLine="Server:a simple java WebServer";
@@ -102,15 +101,20 @@ class httpRequestHandler implements Runnable{
 				String contentTypeLine=null;
 				String entityBody=null;
 				String contentLengthLine="error";
-			
+				//T.msgbox(QText.format("fe %s.ft %s",fileExists,this.fileType));
+				T.print("---------%sfe %s.ft %s",++gi,fileExists,this.fileType);
 				if(fileExists&&this.fileType){
 					statusLine="HTTP/1.0 200 OK"+CRLF;
 					contentTypeLine="Content-type:"+this.contentType(fileName)+CRLF;
-					contentLengthLine="Content-Length:"+(new Integer(fis.available())).toString()+CRLF;
+					try {
+						contentLengthLine="Content-Length:"+(new Integer(fis.available())).toString()+CRLF;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 				else{
 					if(fileExists&&this.fileType==false){
-						statusLine="HTTP/1.0 400 BadRequest"+CRLF;
+						statusLine="HTTP/1.0 200 BadRequest"+CRLF;
 						contentTypeLine="text/html";
 						entityBody="<HTML>400 Not BadRequest</TITLE></HEAD>"+
 						"<BODY>400 BadRequest"+
@@ -126,21 +130,28 @@ class httpRequestHandler implements Runnable{
 						"fileName.html</BODY></HTML>";
 					}
 				}
-				output.write(statusLine.getBytes());
-				output.write(serverLine.getBytes());
-				output.write(contentTypeLine.getBytes());
-				output.write(contentLengthLine.getBytes());
-				output.write(CRLF.getBytes());
-				
-				if(fileExists&&this.fileType){
-					sendBytes(fis,output);
-					fis.close();
-				}
-				else{
-					output.write(entityBody.getBytes());
+				try {
+//					output.write(statusLine.getBytes());
+//					output.write(serverLine.getBytes());
+//					output.write(contentTypeLine.getBytes());
+//					output.write(contentLengthLine.getBytes());
+//					output.write(CRLF.getBytes());
+//					
+					if(fileExists&&this.fileType){
+						sendBytes(fis,output);
+						fis.close();
+					}
+										else{
+											output.write(entityBody.getBytes());
+										}
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
+		//while end
 		try{
 			output.close();
 			br.close();
@@ -149,15 +160,15 @@ class httpRequestHandler implements Runnable{
 		catch(Exception e){}
 	}
 	
-	//½«¿Í»§¶ËÇëÇóµÄÒ³Ãæ·¢ËÍ³öÈ¥
-	private static void sendBytes(FileInputStream fis,OutputStream os) throws Exception{
+	//å°†å®¢æˆ·ç«¯è¯·æ±‚çš„é¡µé¢å‘é€å‡ºå»
+	private static void sendBytes(InputStream fis,OutputStream os) throws Exception{
 		byte[] buffer=new byte[1024];
 		int bytes=0;
 		while((bytes=fis.read(buffer))!=-1){
 			os.write(buffer,0,bytes);
 		}	
 	}
-	//ÉèÖÃcontentTypeµÄÄÚÈİ	
+	//è®¾ç½®contentTypeçš„å†…å®¹	
 	private static String contentType(String fileName){
 		if(fileName.endsWith(".htm")||fileName.endsWith(".html")){
 			return "text/html";

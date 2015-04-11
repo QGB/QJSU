@@ -37,7 +37,7 @@ public class FileTypeFilter implements FilenameFilter{
     		sty=fa.list(new FileTypeFilter("java"));
     		
 			for (int j = 0; j < sty.length; j++) {
-				sta ="package ch"+stn+";\n"+T.read_st(st_path + stn + "/" + sty[j]);
+				sta ="package ch"+stn+";\n"+T.readSt(st_path + stn + "/" + sty[j]);
 				//
 				//System.exit(0);
 				//T.write(st_path + stn + "/" + sty[j],sta,false);
