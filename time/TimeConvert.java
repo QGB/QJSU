@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import qgb.T;
+import qgb.*;
 
 public class TimeConvert {
 
@@ -23,9 +23,10 @@ public class TimeConvert {
 	/**
 	 * @param ast	"yyyy-MM-dd[HH-mm-ss.SSS]"
 	 */
+	//TODO
 	public static long toLong(String ast) {
 		if (ast.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d[]")) {
-			T.print("matches");
+			U.print("matches");
 		}
 		 
 		return 0;
@@ -37,14 +38,14 @@ public class TimeConvert {
 	 */
 	public static long toLong(int year, int month, int date, int hourOfDay, int minute,
             int second,int millisecond) {
-		//¹¹ÔìÒ»¸ö´øÓÐÄ¬ÈÏÊ±ÇøºÍÓïÑÔ»·¾³µÄ Calendar¡£
+		//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½ï¿½ï¿½ Calendarï¿½ï¿½
 		GregorianCalendar gc=new GregorianCalendar();
-		//ÖÐ¹ú±ê×¼Ê±¼ä¡£
+		//ï¿½Ð¹ï¿½ï¿½×¼Ê±ï¿½ä¡£
 		//gc.set(year, month, date, hourOfDay, minute, second);
 		//DateFormat df = new SimpleDateFormat("yyyy-MM-dd[HH-mm-ss]");
 		gc.set(Calendar.YEAR, year);
 		/**
-		 *ÔÂ·ÝÓÉ´Ó 0 ÖÁ 11 µÄÕûÊý±íÊ¾£»0 ÊÇÒ»ÔÂ¡¢1 ÊÇ¶þÔÂµÈµÈ£»Òò´Ë 11 ÊÇÊ®¶þÔÂ¡£
+		 *ï¿½Â·ï¿½ï¿½É´ï¿½ 0 ï¿½ï¿½ 11 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½0 ï¿½ï¿½Ò»ï¿½Â¡ï¿½1 ï¿½Ç¶ï¿½ï¿½ÂµÈµÈ£ï¿½ï¿½ï¿½ï¿½ 11 ï¿½ï¿½Ê®ï¿½ï¿½ï¿½Â¡ï¿½
 		 */
 		gc.set(Calendar.MONTH, month-1);	
 		gc.set(Calendar.DATE, date);

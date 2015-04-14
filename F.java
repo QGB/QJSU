@@ -1,24 +1,24 @@
-package qgb.file;
+package qgb;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import qgb.T;
-import qgb.Y;
+import qgb.*;
+import qgb.file.FileTypeFilter;
 
 public class F {
 	public static void main(String[] args) throws IOException {
-		//InputStream is = T.read_bis("c.jsp");
+		//InputStream is = U.read_bis("c.jsp");
 //		String str = "";
 //		str = ToHex(is);
-//		T.write("c.txt", str);
-		//T.print(Integer.valueOf());
+//		U.write("c.txt", str);
+		//U.print(Integer.valueOf());
 //		byte[] yb=hexToBytes("3031323334353637");
-//		T.print(new String(yb));
-//		T.print(toHexString(yb));
-		T.print(getFilesStringArray("d:/test/", ".txt"));
+//		U.print(new String(yb));
+//		U.print(toHexString(yb));
+		U.print(getFilesStringArray("d:/test/", ".txt"));
 	}
 	//////////////////////////////////////////////
 	/**
@@ -31,7 +31,11 @@ public class F {
 	 */
 	public static String[] getFilesStringArray(String filePath, String astFileType){
 		Object[] yo=getFilesStringList(filePath, astFileType).toArray();
-		return Y.ObjectsToYStr(yo) ;
+		String[] yst=new String[yo.length];
+		for (int i = 0; i < yst.length; i++) {
+			yst[i]=yo[i].toString().replace("\\", "/");
+		}
+		return yst;
 	}
 	
 	public static ArrayList<String> getFilesStringList(String filePath, String astFileType) {
@@ -59,7 +63,7 @@ public class F {
 	// /////////////////////////////////////////////
 	public static byte[] hexToBytes(String ast) {
 		if (ast.length()%2!=0) {
-			T.notify("illegal input! |ast.length()="+ast.length());
+			U.notify("illegal input! |ast.length()="+ast.length());
 			return null;
 		}
 		byte[] yb =new byte[ast.length()/2];
@@ -73,7 +77,7 @@ public class F {
 		return yb;
 	}
 	public static String toHexString(InputStream ais) {
-		return toHexString(T.InputStreamToBytes(ais));
+		return toHexString(U.InputStreamToBytes(ais));
 	}
 
 	public static String toHexString(byte[] ayb) {
@@ -92,7 +96,7 @@ public class F {
 		while (ast.startsWith(".")) {
 			ast=ast.substring(1, ast.length());
 		}
-		//T.print(ast);
+		//U.print(ast);
 		return ast;
 	}
 
@@ -104,7 +108,7 @@ public class F {
 		return false;
 	}
 	public static boolean isExist(String astF) {
-		astF=T.autoPath(astF);
+		astF=U.autoPath(astF);
 		return new File(astF).exists();
 	}
 	public static void rename(String sFP, String sFNOld, String sFNNew) {
@@ -114,7 +118,7 @@ public class F {
 	public static void rename(String sFOld, String sFNew) {
 		File f=new File(sFOld);
 		if (!f.renameTo(new File(sFNew))) {
-			T.notify(sFOld+"\n"+sFNew);
+			U.notify(sFOld+"\n"+sFNew);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package qgb;
+package qgb.os.win;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -9,9 +9,11 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
+import qgb.U;
+
 public class SysClipboard {
 	public static void main(String[] args) {
-		if(isText())T.print(getText());
+		if(isText())U.print(getText());
 	}
 
 	// //////////////////////////////////////////////////////////

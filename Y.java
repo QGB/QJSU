@@ -3,8 +3,6 @@ package qgb;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import qgb.text.QText;
 /**QGB's java basic array method**/
 public class Y {  
   
@@ -12,15 +10,15 @@ public class Y {
     	if (true) {
 			return;
 		}
-    	String stin=T.readSt("y.txt");
+    	String stin=U.readSt("y.txt");
     	//"char","Character"
     	String[][] yyc={{"boolean","Boolean"},{"byte","Byte"},{"char","Character"},
     			{"double","Double"},{"float","Float"},{"int","Integer"},{"long","Long"},{"short","Short"}};
     	for (int i = 0; i < yyc.length; i++) {
-			String str=QText.replaceAll(stin, "char", yyc[i][0]);
-			str=QText.replaceAll(str, "Character", yyc[i][1]);
-			T.print(str);
-			//T.msgbox();
+			String str=T.replaceAll(stin, "char", yyc[i][0]);
+			str=T.replaceAll(str, "Character", yyc[i][1]);
+			U.print(str);
+			//U.msgbox();
 		}
     	
     }  
@@ -207,7 +205,7 @@ public class Y {
 
 	public static String ArrayToStr(String[] ayst, String ast_separator) {
 		String str="";
-		//T.print("["+ast_separator+"]");
+		//U.print("["+ast_separator+"]");
 		for (int i = 0; i < ayst.length; i++) {
 			str=str+ayst[i]+ast_separator;
 		}

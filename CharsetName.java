@@ -10,11 +10,11 @@ public class CharsetName {
 	/**Default**/
 	public static String GST_DEF=GST_UTF8;
 	public static void main(String[] args)  {	
-		//T.write(ast_filename, ast_text, ast_bytes);
+		//U.write(ast_filename, ast_text, ast_bytes);
 		Charset.isSupported(GST_GB2312);
 		Charset.isSupported(GST_GBK);
 		Charset.isSupported(GST_UTF8);
-		T.print(CharsetName.class);
+		U.print(CharsetName.class);
 	}
 	
 	

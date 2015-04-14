@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import qgb.T;
+import qgb.U;
+
 
 
 public class FileTypeFilter implements FilenameFilter{  
@@ -37,14 +38,14 @@ public class FileTypeFilter implements FilenameFilter{
     		sty=fa.list(new FileTypeFilter("java"));
     		
 			for (int j = 0; j < sty.length; j++) {
-				sta ="package ch"+stn+";\n"+T.readSt(st_path + stn + "/" + sty[j]);
+				sta ="package ch"+stn+";\n"+U.readSt(st_path + stn + "/" + sty[j]);
 				//
 				//System.exit(0);
-				//T.write(st_path + stn + "/" + sty[j],sta,false);
-				//T.print("---"+sty[j]);
+				//U.write(st_path + stn + "/" + sty[j],sta,false);
+				//U.print("---"+sty[j]);
 			}
     		
-    		T.print(stn);
+    		U.print(stn);
     		//break;
 		}
     	//
