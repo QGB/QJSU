@@ -245,7 +245,7 @@ public final class U {
 	// public static String getCurrentClassName() {
 	// return getCurrentClass().getName();
 	// }
-	/** TODO:睫凤胤� */
+	/** TODO:鐫嚖鑳わ拷 */
 	public static Method getCurrentMethod() {
 		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
 		if (yste.length < 2) {
@@ -290,7 +290,7 @@ public final class U {
 		if (yste.length < 2) {
 			return null;
 		}
-		/** 诙� */
+		/** 璇欙拷 */
 		String str = yste[yste.length - 1 - 1].toString();
 		// print(yste);
 		StringBuilder sb = new StringBuilder("\n");
@@ -398,9 +398,9 @@ public final class U {
 
 	// ////////////////////////////////////////////////////////
 	public static String getCurrentTime() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 节革式
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 鑺傞潻寮�
 		// System.out.println(df.format(new Date()));// new
-		// Date()为取前系统时
+		// Date()涓哄彇鍓嶇郴缁熸椂
 		return df.format(new Date());
 	}
 
@@ -463,7 +463,7 @@ public final class U {
 					U.print("%s=\"%s\"", astName + "." + yf[i].getName(), sta);
 					bool = true;
 				}
-				/** TODO 无法输出null值 **/
+				/** TODO 鏃犳硶杈撳嚭null鍊�**/
 				// else {
 				// U.print("%s=null", astName + "." + yf[i].getName());
 				// }
@@ -637,14 +637,14 @@ public final class U {
 	}
 
 	/**
-	 * 絘st_filename .头为前路 </p> modified at 2014-07-23 02:08:51 modified at
-	 * 2014-07-31 03:00:19 TODO:mac os 铰凤街э�
+	 * 绲榮t_filename .澶翠负鍓嶈矾 </p> modified at 2014-07-23 02:08:51 modified at
+	 * 2014-07-31 03:00:19 TODO:mac os 閾板嚖琛椦嶏拷
 	 **/
 	public static String autoPath(String ast_filename) {
 		if (ast_filename.startsWith(".")) {
 			return ast_filename;
 		}
-		if (isFullPath(ast_filename)) {// 侥硷角凤为全路
+		if (isFullPath(ast_filename)) {// 渚ョ》瑙掑嚖涓哄叏璺�
 			makeDirs(ast_filename);
 			return ast_filename;
 		} else {
@@ -697,10 +697,10 @@ public final class U {
 				// + ",InputStream)");
 			}
 
-			// 叫碉饺叫达�
+			// 鍙楗侯偓鍙揪锟�
 			bos.flush();
 
-			// 截憋
+			// 鎴唻
 			// bufferedInputStream.close();
 			bos.close();
 			abis.close();
@@ -721,7 +721,7 @@ public final class U {
 	public static void makeDirs(String fileName) {
 		File f = new File(fileName);
 		// U.print("%s isD %b",fileName,F.isDirectory(fileName));
-		/** 使File.isDirectory()叫讹一节碉侥硷角凤为目录 **/
+		/** 浣縁ile.isDirectory()鍙涓�妭纰変茎纭疯鍑や负鐩綍 **/
 		if (F.isDirectory(fileName) == false) {
 			f = f.getParentFile();
 			if (f == null) {
@@ -929,7 +929,7 @@ public final class U {
 		System.err.flush();
 	}
 
-	public static byte[] readByteArray(String fileName) {
+	public static byte[] readBytes(String fileName) {
 		return InputStreamToBytes(readBis(fileName));
 	}
 
@@ -1054,7 +1054,7 @@ public final class U {
 		return stp;
 	}
 
-	/** 支mac oswindows **/
+	/** 鏀痬ac oswindows **/
 	public static String getSource(Class<?> aClass) {
 		String stp = aClass.getProtectionDomain().getCodeSource().getLocation()
 				.toString();
@@ -1150,6 +1150,26 @@ public final class U {
 
 	public static void error(Object aoa) {
 		System.err.println(aoa);
+	}
+
+	public static String exec(String asc) {
+		Process p=null;
+		Runtime rt = Runtime.getRuntime();
+		try {
+			p= rt.exec(asc);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
+		if(p==null)return "";
+		InputStream is=p.getInputStream();
+		String st="";
+		try {
+			st=new String(U.InputStreamToBytes(is),	CharsetName.GST_GBK);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return st;
 	}
 
 }

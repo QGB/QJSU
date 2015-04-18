@@ -222,4 +222,14 @@ public class T {
 		}
 		return ast.substring(ia,ib);
 	}
+
+	public static String replace(String ast, String as1, String as2) {
+		if(ast==null||as1==null||as2==null||ast.equals("")){
+			return "";
+		}
+		if(as1.equals("")){
+			return ast;
+		}
+		return ast.replace(as1, as2);
+	}
 }

@@ -1,0 +1,17 @@
+if (e.getColumn()==giDM_Col) {
+					String st=Main.gTable.getValueAt(ir,giDM_Col).toString();
+					Teachers.galT.get(ir).setGiDM(DepartMents.getIndexByName(st));
+					//T.print(st);
+				}
+				if (e.getColumn()==giWork_Col) {
+					int iw=(Integer) Main.gTable.getValueAt(ir,giWork_Col);
+					Teachers.galT.get(ir).setGiWork(iw);
+				}
+				if (e.getColumn()==giDeg_Col) {
+					Teachers.galT.get(ir).setGsDegree((String) Main.gTable.getValueAt(ir,giDeg_Col));;
+				}
+				if (e.getColumn()==giDate_Col) {
+					Teachers.galT.get(ir).setGiDate((Integer) Main.gTable.getValueAt(ir,giDate_Col));;
+				}
+				//T.print("r:%sc:%s",,);
+	

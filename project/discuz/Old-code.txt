@@ -1,0 +1,29 @@
+//sthtml=Regex.get_first_text("(?<=<tbody>)[\\w\\W]*(?=</tbody>)", sthtml);
+		String[] yst=Regex.get_text_array("(?<=<tbody id=\"normalthread_\\d{1,9}\">)[\\w\\W]*?(?=</tbody>)", sthtml);
+		String[] ystitle,yst_3;//1<td>,3<th>
+		//String[] ystr=new String[4];	
+		int ititle=0,icf=0;
+		
+		
+		for (int i = 0; i < yst.length; i++) {
+			yst_3=Regex.get_text_array("(?<=<th>)[\\w\\W]*?(?=</th>)", yst[i]);
+			ystitle=Regex.get_text_array("(?<=<td><a href=\")[\\w\\W]*?(?=</a>)", yst[i]);
+			if (yst_3.length!=3|ystitle.length!=1) {
+				throw new DataFormatException(ai+" format error!");
+			}
+			//T.print(yst_3);
+			//T.msgbox("");
+			ititle= ystitle[0].indexOf("\">");
+			stitle=ystitle[0].substring( ititle+2,ystitle[0].length());
+			sturl="http://wooyun.org/"+ystitle[0].substring(0, ititle);
+			
+			tsubmit=yst_3[0];
+			yst_3[1]=Regex.get_first_text("(?<=#comment\">)[\\w\\W]*?(?=</a>)", yst_3[1]);
+			icf=yst_3[1].indexOf('/');
+			//T.print("yst_3[1]:"+yst_3[1]);
+			icommen=yst_3[1].substring(0, icf);
+			iview=yst_3[1].substring(icf+1,yst_3[1].length());
+			sauthor=Regex.get_first_text("(?<=<a title=\")[\\w\\W]*?(?=\" href=\")", yst_3[2]);
+2014-06-01 21:33:21
+
+
