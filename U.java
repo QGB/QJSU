@@ -13,6 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
@@ -29,12 +31,9 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-import javax.tools.JavaCompiler;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
-import javax.tools.JavaCompiler.CompilationTask;
+import com.baoxiu.User;
 
+import qgb.os.win.Win;
 import qgb.text.Regex;
 
 /** QGB's java basic utils **/
@@ -56,108 +55,12 @@ public final class U {
 	}
 
 	// /////////////////////////////////////////////////////////
-	public static void main(String[] args) {
-		String st = getSource(A_Sample.class);
-		st=U.readSt("1.java");
-		//U.sleep(5333);
-		Class<?> c=U.compileJavaCode(st);
-		U.print(c);
-		
-		// U.browser("http://qq.com",999);
-		if (true)
-			return;
-		// U.exit();
-		U.print("%s", 1);
-		// getSource(aClass)
-		// U.print(min(1, 23,4 ,87,32,324,234,2,324,423434,0,-4,5));
-		U.beginKeepTime();
-
-		for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE; i++) {
-			// min(1, 2);
-			// min(1, 2, 3);
-			// min(1, 23,4 ,87,32,324,234,2,324,423434,0,-4,5);
-		}
-		U.endKeepTime(true);
-		// U.write("t.bin", "ast_text", CharsetName.GST_GBK);
-		// getSource(U.class);
-		// print("java.awt.EventDispatchThread.pumpEvents(java.awt.event.ActionEvent[ACTION_PERFORMED,cmd=,when=14".length());
+	public static void main(String[] args) throws Exception {
+		U.print(U.getCmdToRun());
+		//main(null);
 	}
+	
 
-	// TODO
-	/**@Tested**/
-	public static Object callStaticMethod(Method am, Object... args) {
-		try {
-			 return am.invoke(null,args);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			try {
-				return am.invoke(null, new Object[] { args });
-			} catch (IllegalAccessException|InvocationTargetException e1) {
-				e1.printStackTrace();
-			}catch (IllegalArgumentException e2) {
-				U.error(e2, "!!!am="+am.toString()+",args="+args);
-			}
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static Class<?> compileJavaCode(String asJavaCode) {
-		if (asJavaCode == null || asJavaCode.length() < 9) {
-			return null;
-		}
-		asJavaCode=asJavaCode.trim();
-
-		String stPubClass = getPublicClassName(asJavaCode);
-		if(stPubClass.length()<1)return null;
-		/****compile****/
-		JavaCompiler complier = ToolProvider.getSystemJavaCompiler();
-		StandardJavaFileManager sjf = complier.getStandardFileManager(null,
-				null, null);
-		U.write(stPubClass+".java",asJavaCode);
-		Iterable it = sjf.getJavaFileObjects(U.autoPath(stPubClass+".java"));
-		CompilationTask task = complier
-				.getTask(null, sjf, null, null, null, it);
-		task.call(); // Create .class file
-		try {sjf.close();} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		U.delFile(stPubClass+".java");
-		/****compile success!***/
-		String stClassPath=U.gstTestPath,stClassName=stPubClass;
-		if (asJavaCode.startsWith("package ")) {
-			InputStream isC;
-			try {
-				isC = U.readIs(U.autoPath(stPubClass+".class"));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				return null;
-			}
-			
-			stClassName=T.sub(asJavaCode, "package ", ";").trim()+".";
-			stClassPath=U.getClassBase()+stClassName.replace(".","/");
-			U.write(stClassPath+stPubClass+".class", isC);
-			U.delFile(stPubClass+".class");
-			stClassPath=U.getClassBase();
-			stClassName=stClassName+stPubClass;
-		}
-		/*****load ; Not del .class file!****/
-		try {
-			URL urls[] = new URL[] { new URL("file:"+stClassPath) }; // .class path
-			//U.print(urls);
-			URLClassLoader uLoad = new URLClassLoader(urls);
-			//U.print(uLoad.getURLs());
-			return  uLoad.loadClass(stClassName);
-		} catch (MalformedURLException | ClassNotFoundException|NoClassDefFoundError e) {
-			System.err.print(stClassPath+"|   ");
-			e.printStackTrace();
-			return null;
-		}
-	}
 
 	public static String getPublicClassName(String asJavaCode) {
 		String st = Regex.getFirst(Regex.GS_PubClassName, asJavaCode);
@@ -361,7 +264,11 @@ public final class U {
 
 	// /////////////////////////////////////////////////////////
 	public static String msgbox(Object message, Object initialSelectionValue) {
-		return JOptionPane.showInputDialog(message, initialSelectionValue);
+		if (OS.isWin()) {
+			return Win.msgbox(message, initialSelectionValue);
+		}
+		return "";
+		
 	}
 
 	/**
@@ -375,11 +282,11 @@ public final class U {
 	 * @see java.awt.GraphicsEnvironment.isHeadless
 	 */
 	public static String msgbox(Object message) {
-		return JOptionPane.showInputDialog(message, message);
+		return msgbox(message, message);
 	}
 
 	public static String msgbox(String format, Object... args) {
-		return JOptionPane.showInputDialog(T.format(format, args));
+		return msgbox(T.format(format, args));
 	}
 
 	public static void msgbox() {
@@ -584,12 +491,11 @@ public final class U {
 
 	// ////////////////////////////////////////////////////
 	public static String cin(String ast_parentComponent, String ast_message) {
-		return (JOptionPane.showInputDialog(ast_parentComponent, ast_message));
+		return (msgbox(ast_parentComponent, ast_message));
 	}
 
 	public static String cin(String ast_message) {
-		return (JOptionPane
-				.showInputDialog("Pleaese input text :", ast_message));
+		return (msgbox("Pleaese input text :", ast_message));
 	}
 
 	// ///////////////////////////////////////////////////

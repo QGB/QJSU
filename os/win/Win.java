@@ -70,6 +70,10 @@ public final class Win {
 	private static void argsTest(Object ... ayo ) {
 		U.print(ayo.getClass());
 	}
+
+	public static String msgbox(Object message, Object initialSelectionValue) {
+		return JOptionPane.showInputDialog(message, initialSelectionValue);
+	}
 	
 	
 }
