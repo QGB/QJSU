@@ -17,9 +17,6 @@ import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 
-import qgb.Array;
-import qgb.CharsetName;
-import qgb.Convert;
 import qgb.*;
 import qgb.jdbc.Mysql;
 import qgb.net.Get;

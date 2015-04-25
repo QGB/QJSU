@@ -10,16 +10,14 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.zip.ZipException;
 
 import javax.swing.JOptionPane;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import qgb.CharsetName;
-import qgb.T;
-import qgb.text.QText;
-import test.t2;
+import qgb.*;
 
 /////////////////////////////////////////////////
 public class Get {
@@ -40,7 +38,7 @@ public class Get {
 
 		if (HttpResult != HttpURLConnection.HTTP_OK) { // ������HTTP_OK˵�����Ӳ��ɹ�
 			// System.out.print("fail");
-			T.notify("url=" + asUrl + "\n	HttpResult=" + HttpResult);
+			U.notify("url=" + asUrl + "\n	HttpResult=" + HttpResult);
 			return null;
 		} else {
 			int filesize = urlconn.getContentLength(); // ȡ��ݳ���
@@ -56,8 +54,8 @@ public class Get {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, IOException {
-		T.print(urlfile("http://www.baidu.com/s?wd=git 下载").toString());
-		T.exit();
+		U.print(urlfile("http://www.baidu.com/s?wd=git 下载").toString());
+		U.exit();
 		String surl = "";
 		surl = "13827";
 		surl = "http://www.joces.org.cn/CN/abstract/abstract" + surl + ".shtml";
@@ -76,14 +74,14 @@ public class Get {
 
 		// surl= html("http://www.joces.org.cn/CN/abstract/abstract"+
 		// surl+".shtml");
-		// T.print(surl);
+		// U.print(surl);
 		// urlfile("http://www.joces.org.cn/CN/abstract/abstract"+
 		// surl+".shtml");
-		// T.print("test1 qgb");
-		// T.write(surl + ".pdf",
+		// U.print("test1 qgb");
+		// U.write(surl + ".pdf",
 		// urlfile("http://www.joces.org.cn/CN/article/downloadArticleFile.do?attachType=PDF&id="
 		// + surl));
-		// T.write(surl + ".shtml",
+		// U.write(surl + ".shtml",
 		// urlfile("http://www.joces.org.cn/CN/abstract/abstract"
 		// + surl+".shtml"));
 
@@ -101,7 +99,7 @@ public class Get {
 			throws IllegalArgumentException, IOException,
 			SocketTimeoutException, MalformedURLException {
 		if (aiRetry < 1 || timeoutMillis < 0) {
-			T.argsError(asUrl, aiRetry, timeoutMillis);
+			U.argsError(asUrl, aiRetry, timeoutMillis);
 		}
 
 		URL url = new URL(asUrl);
@@ -109,9 +107,9 @@ public class Get {
 		try {
 			doc = Jsoup.parse(url, timeoutMillis);
 		} catch(SocketException e){
-			T.print(url);
+			U.print(url);
 		}
-		catch (SocketTimeoutException e) {
+		catch (ZipException|SocketTimeoutException e) {
 			if (aiRetry > 1) {
 				doc = jsoupDoc(asUrl, aiRetry - 1, timeoutMillis+5100);
 			} else {

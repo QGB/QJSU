@@ -1,6 +1,7 @@
 package qgb;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -196,7 +197,21 @@ public class T {
 		}
 		return i+repeat(im-(i+"").length(), " ");
 	}
-
+	
+	
+	public static String subLast(String ast, String as1) {
+		if (ast==null||as1==null) {
+			return "";
+		}
+		if (!ast.contains(as1)) {
+			return "";
+		}
+		int i=ast.lastIndexOf(as1)+as1.length();
+		if (i<0||i>=ast.length()-1) {
+			return "";
+		}
+		return ast.substring(i);
+	}
 	public static String sub(String ast, String as1) {
 		if (ast==null||as1==null) {
 			return "";
@@ -216,7 +231,7 @@ public class T {
 			return "";
 		}
 		int ia=ast.indexOf(as1)+as1.length();
-		int ib=ast.indexOf(as2);
+		int ib=ast.indexOf(as2, ia);
 		if (ib<=ia) {
 			return "";
 		}
@@ -232,4 +247,6 @@ public class T {
 		}
 		return ast.replace(as1, as2);
 	}
+
+
 }
