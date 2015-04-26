@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import qgb.*;
+import qgb.annotation.tested;
 import qgb.file.FileTypeFilter;
 
 public class F {
@@ -76,16 +77,19 @@ public class F {
 		}
 		return yb;
 	}
-	public static String toHexString(InputStream ais) {
-		return toHexString(U.InputStreamToBytes(ais));
+	public static String isToHex(InputStream ais) {
+		return bytesToHex(U.InputStreamToBytes(ais));
 	}
-
-	public static String toHexString(byte[] ayb) {
+	@tested("2015-04-26 00:06:30")
+	public static String bytesToHex(byte[] ayb) {
 		StringBuilder sb=new StringBuilder();
-
 		for (int i = 0; i < ayb.length; i++) {
 			Byte b = ayb[i];
-			sb.append(Integer.toString(b.intValue(), 16));
+			if ( b>=0&&b<=0xf) {
+				sb.append( "0"+Integer.toString(b.intValue(), 16));
+			}else {
+				sb.append( Integer.toString(F.byteToint(b), 16));
+			}
 		}
 		return sb.toString().toUpperCase();
 	}
@@ -119,6 +123,24 @@ public class F {
 		File f=new File(sFOld);
 		if (!f.renameTo(new File(sFNew))) {
 			U.notify(sFOld+"\n"+sFNew);
+		}
+	}
+	public static byte intTobyte(int i) {
+		if (i<0||i>255) {
+			U.argsError(i);
+		}
+		if (i<0x80) {
+			return (byte) i;
+		}else {
+			return (byte)( i+256);
+		}
+	}
+	/**0-255*/
+	public static int byteToint(byte b) {
+		if (b>=0) {
+			return (int)b;
+		}else {
+			return (int)( b)+256;
 		}
 	}
 }

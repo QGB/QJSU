@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
 
-import com.baoxiu.User;
+import frame.User;
 
 import qgb.os.win.Win;
 import qgb.text.Regex;
