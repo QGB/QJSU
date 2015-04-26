@@ -203,18 +203,18 @@ public class Y {
     }  
   
 
-	public static String ArrayToStr(String[] ayst, String ast_separator) {
-		String str="";
-		//U.print("["+ast_separator+"]");
+	public static String ArrayToStr(String[] ayst, String aSeparator) {
+		StringBuilder sb=new StringBuilder();
+		//U.print("["+aSeparator+"]");
 		for (int i = 0; i < ayst.length; i++) {
-			str=str+ayst[i]+ast_separator;
+			sb.append(ayst[i]+aSeparator);
 		}
-		return str;
+		return sb.toString();
 	}
 	/**自动剔除""与null值</br>
 	 * Windows 换行符 \r\n**/
-	public static String[] StrToArray(String ast,String ast_separator) {
-		String[] yst=ast.split(ast_separator);
+	public static String[] StrToArray(String ast,String aSeparator) {
+		String[] yst=ast.split(aSeparator);
 		return  delTarget(yst,"");	
 	}
 	/**删除aySource中的ayTarget。</br>自动删除null值**/
@@ -242,6 +242,15 @@ public class Y {
 			yst[i] = ayo[i].toString();
 		}
 		return yst;
+	}
+
+	public static String ArrayToStr(Object[] ayo, String aSeparator) {
+		StringBuilder sb=new StringBuilder();
+		//U.print("["+aSeparator+"]");
+		for (int i = 0; i < ayo.length; i++) {
+			sb.append(ayo[i].toString()+aSeparator);
+		}
+		return sb.toString();
 	}
 
 }  

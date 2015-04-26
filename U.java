@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
 
-import frame.User;
 
 import qgb.os.win.Win;
 import qgb.text.Regex;
@@ -148,7 +147,7 @@ public final class U {
 	// public static String getCurrentClassName() {
 	// return getCurrentClass().getName();
 	// }
-	/** TODO:鐫嚖鑳わ拷 */
+	/** TODO:閻偄鍤栭懗銈忔嫹 */
 	public static Method getCurrentMethod() {
 		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
 		if (yste.length < 2) {
@@ -193,7 +192,7 @@ public final class U {
 		if (yste.length < 2) {
 			return null;
 		}
-		/** 璇欙拷 */
+		/** 鐠囨瑱鎷�*/
 		String str = yste[yste.length - 1 - 1].toString();
 		// print(yste);
 		StringBuilder sb = new StringBuilder("\n");
@@ -305,9 +304,9 @@ public final class U {
 
 	// ////////////////////////////////////////////////////////
 	public static String getCurrentTime() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 鑺傞潻寮�
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 閼哄倿娼诲锟�
 		// System.out.println(df.format(new Date()));// new
-		// Date()涓哄彇鍓嶇郴缁熸椂
+		// Date()娑撳搫褰囬崜宥囬兇缂佺喐妞�
 		return df.format(new Date());
 	}
 
@@ -370,7 +369,7 @@ public final class U {
 					U.print("%s=\"%s\"", astName + "." + yf[i].getName(), sta);
 					bool = true;
 				}
-				/** TODO 鏃犳硶杈撳嚭null鍊�**/
+				/** TODO 閺冪姵纭舵潏鎾冲毉null閸婏拷**/
 				// else {
 				// U.print("%s=null", astName + "." + yf[i].getName());
 				// }
@@ -543,14 +542,14 @@ public final class U {
 	}
 
 	/**
-	 * 绲榮t_filename .澶翠负鍓嶈矾 </p> modified at 2014-07-23 02:08:51 modified at
-	 * 2014-07-31 03:00:19 TODO:mac os 閾板嚖琛椦嶏拷
+	 * 缁叉Ξt_filename .婢剁繝璐熼崜宥堢熅 </p> modified at 2014-07-23 02:08:51 modified at
+	 * 2014-07-31 03:00:19 TODO:mac os 闁炬澘鍤栫悰妞﹀稄鎷�
 	 **/
 	public static String autoPath(String ast_filename) {
 		if (ast_filename.startsWith(".")) {
 			return ast_filename;
 		}
-		if (isFullPath(ast_filename)) {// 渚ョ》瑙掑嚖涓哄叏璺�
+		if (isFullPath(ast_filename)) {// 娓氥儳銆嬬憴鎺戝殩娑撳搫鍙忕捄锟�
 			makeDirs(ast_filename);
 			return ast_filename;
 		} else {
@@ -603,10 +602,10 @@ public final class U {
 				// + ",InputStream)");
 			}
 
-			// 鍙楗侯偓鍙揪锟�
+			// 閸欘偆顣渚亾閸欘偉鎻敓锟�
 			bos.flush();
 
-			// 鎴唻
+			// 閹搭亝鍞�
 			// bufferedInputStream.close();
 			bos.close();
 			abis.close();
@@ -627,7 +626,7 @@ public final class U {
 	public static void makeDirs(String fileName) {
 		File f = new File(fileName);
 		// U.print("%s isD %b",fileName,F.isDirectory(fileName));
-		/** 浣縁ile.isDirectory()鍙涓�妭纰変茎纭疯鍑や负鐩綍 **/
+		/** 娴ｇ竵ile.isDirectory()閸欘偉顔愭稉锟藉Ν绾板鑼庣涵鐤瀾閸戙倓璐熼惄顔肩秿 **/
 		if (F.isDirectory(fileName) == false) {
 			f = f.getParentFile();
 			if (f == null) {
@@ -960,7 +959,7 @@ public final class U {
 		return stp;
 	}
 
-	/** 鏀痬ac oswindows **/
+	/** 閺�棳ac oswindows **/
 	public static String getSource(Class<?> aClass) {
 		String stp = aClass.getProtectionDomain().getCodeSource().getLocation()
 				.toString();
