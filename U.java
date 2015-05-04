@@ -525,7 +525,7 @@ public final class U {
 	public static void write(String ast_filename, String ast_text) {
 		FileWriter fw = null;
 		try {
-			fw = new FileWriter(autoPath(ast_filename));
+			fw = new FileWriter(U.autoPath(ast_filename));
 			fw.write(ast_text);
 			fw.flush();
 			// tprint(ast_text);
@@ -701,7 +701,7 @@ public final class U {
 	 * @see qgb.U.autoPath
 	 */
 	public static BufferedInputStream readBis(String fileName) {
-		File file = new File(autoPath(fileName));
+		File file = new File(U.autoPath(fileName));
 
 		FileInputStream fis = null;
 		try {
@@ -722,7 +722,7 @@ public final class U {
 	 */
 	public static InputStream readIs(String fileName)
 			throws FileNotFoundException {
-		File file = new File(autoPath(fileName));
+		File file = new File(U.autoPath(fileName));
 
 		FileInputStream fis = null;
 		try {
@@ -839,7 +839,7 @@ public final class U {
 	}
 
 	public static void delFile(String asPath) {
-		File file = new File(autoPath(asPath));
+		File file = new File(U.autoPath(asPath));
 		if (file.exists()) {
 			if (file.delete() == false) {
 				U.notify("U.delFile error file is not  deleted!"+autoPath(asPath));
@@ -859,7 +859,7 @@ public final class U {
 	/*********** setOutStream *************************/
 	public static void setOutStream(String ast) {
 		try {
-			PrintStream ps = new PrintStream(autoPath(ast),
+			PrintStream ps = new PrintStream(U.autoPath(ast),
 					CharsetName.GST_UTF8);
 			System.setOut(ps);
 		} catch (FileNotFoundException e) {
@@ -871,7 +871,7 @@ public final class U {
 
 	public static void setErrStream(String ast) {
 		try {
-			PrintStream ps = new PrintStream(autoPath(ast),
+			PrintStream ps = new PrintStream(U.autoPath(ast),
 					CharsetName.GST_UTF8);
 			System.setErr(ps);
 		} catch (FileNotFoundException e) {

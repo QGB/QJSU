@@ -3,6 +3,8 @@ package qgb.project.website;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,34 +17,45 @@ import qgb.net.QNet;
 import qgb.os.win.Win;
 
 public class Hnlat {
-	static final String gsd = "http://172.17.5.48/";
+	static final String gsd = "http://mechanics.xd.lib.hnlat.com/";//"http://172.17.5.48/";
 
-	public static void main(String[] args) {
-		String[] ysp = U.readSt("f1.txt").split("\n");
-		ArrayList<String> al200=new ArrayList<String>(),
-				al404=new ArrayList<String>(),alError=new ArrayList<String>();
-		
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+		String[] ysp = U.readSt("200.txt").split("\n");
+//		ArrayList<String> al200=new ArrayList<String>(),
+//				al404=new ArrayList<String>(),alError=new ArrayList<String>();
+		U.print(ysp);
+		U.gstTestPath=U.gstTestPath+"xd/";
+		U.setErrStream("error.txt");
+		PrintStream ps200 = new PrintStream(U.autoPath("200.txt"),
+				CharsetName.GST_UTF8);
+		PrintStream ps404 = new PrintStream(U.autoPath("404.txt"),
+				CharsetName.GST_UTF8);
 		for (int i = 0; i < ysp.length; i++) {
 			if (!ysp[i].contains(".")) {
 				continue;
 			}
 			// U.print(ysp[i]);
+			ysp[i]=gsd + ysp[i];
 			try {
-				con(gsd + ysp[i]);
-				al200.add(ysp[i]);
+				con(ysp[i]);
+				ps200.println(ysp[i]);
 			} catch (FileNotFoundException e) {
 				//e.printStackTrace();
-				al404.add(ysp[i]);
+				ps404.println(ysp[i]);
 			} catch (Exception e) {
-				alError.add(ysp[i]);
-				//e.printStackTrace();
+				System.err.println(ysp[i]);
+				e.printStackTrace();
+				
 			}
-			U.sleep(77);
+			U.sleep(111);
+			U.print("[%s]%s",i,ysp[i]);
+			if (i%222==0) {
+				System.err.flush();
+				ps200.flush();
+				ps404.flush();
+			}
 		}
 		
-		U.write("200.txt", Y.ArrayToStr(al200.toArray(), "\n"));
-		U.write("404.txt", Y.ArrayToStr(al404.toArray(), "\n"));
-		U.write("error.txt", Y.ArrayToStr(alError.toArray(), "\n"));
 	}
 
 	public static void con(String path) throws FileNotFoundException, Exception {

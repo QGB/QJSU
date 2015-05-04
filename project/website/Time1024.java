@@ -12,13 +12,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import qgb.CharsetName;
-import qgb.F;
-import qgb.T;
-import qgb.U;
+import qgb.*;
 import qgb.net.Get;
 import qgb.net.HttpRequest;
-import qgb.project.discuz.Bbs_kuaibo_com;
 
 public class Time1024 {
 	static String gsDomain="http://woge.xyz/";
@@ -129,60 +125,8 @@ public class Time1024 {
 	
 	
 	
+
 	
-	private static void getPages() {
-		String str = "", sthtml = "";
-
-		for (int i = 1; i <=76; i++) {
-			try {
-				getPage(i);
-			} catch (DataFormatException e) {
-				// TODO Auto-generated catch block
-				U.write(i+"Exception.txt",e.getClass()+"\n"+U.getCurrentTime() );
-				e.printStackTrace();
-				continue;
-			}catch (NullPointerException e) {
-				U.write(i+"Exception.txt",e.getClass()+"\n"+U.getCurrentTime() );
-				e.printStackTrace();
-			}catch (SocketException e) {
-				U.write(i+"Exception.txt",e.getClass()+"\n"+U.getCurrentTime() );
-				e.printStackTrace();
-			}catch (IOException e) {
-				U.write(i+"Exception.txt",e.getClass()+"\n"+U.getCurrentTime() );
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	private static String getPage(int ai) throws DataFormatException,SocketException,IOException,NullPointerException {
-		String stinput = "http://bbs.kuaibo.com/forum-36-" + ai+".html", sthtml = "";
-		InputStream is;
-		is = HttpRequest.get(stinput);
-		byte[] bytes;
-		bytes=U.InputStreamToBytes(is);
-		is=U.BytesToInputStream(bytes);
-
-		try {
-			sthtml = U.InputStreamToString(is, CharsetName.GST_UTF8);
-			U.print(Bbs_kuaibo_com.class+":"+ ai);
-			U.write("discuz/"+ai+".html",U.BytesToInputStream(bytes));
-			// str= Get.html(sturl);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		if (0==0) {
-			return "";
-		}
-
-			return sthtml;
-			
-		
-	}
-
-
 	
 	
 }

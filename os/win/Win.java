@@ -25,10 +25,16 @@ public final class Win {
 	 */
 	public static void main(String[] args) throws Exception {
 		//argsTest(new String[]{});
+		U.print(msgbox("",null));
+		//U.print();
 	}
 
 	public static String msgbox(Object message, Object initialSelectionValue) {
-		return JOptionPane.showInputDialog(message, initialSelectionValue);
+		String str=JOptionPane.showInputDialog(message, initialSelectionValue);
+		if (str==null) {
+			U.exit();
+		}
+		return str;
 	}
 	
 	
