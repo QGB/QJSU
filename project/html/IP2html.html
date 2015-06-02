@@ -1,0 +1,83 @@
+<script> var st= _TEXT(function(){/*
+10.1.1.213
+10.1.1.214
+10.1.1.221
+10.1.1.217
+10.1.1.225
+10.1.1.222
+10.1.1.229
+10.1.1.218
+10.1.1.233
+10.1.1.234
+10.1.1.237
+10.1.1.238
+10.1.1.241
+10.1.1.242
+10.1.1.249
+10.1.1.254
+10.1.1.250
+*/}).replace(/ /g,'').split("\n");
+
+var shtml= _TEXT(function(){/*
+<div>
+<a href='http://{0}' target=a{1}  style=color:red;bgcolor=black; text-align:center;font-size:52px;>{0}</a><br>
+ <iframe id= a{1} src = http://{0} height=300 width={2} security="restricted" sandbox=""></iframe>
+ <br>
+ </div>
+*/})
+
+function _TEXT(wrap) {
+    return wrap.toString().match(/\/\*\s([\s\S]*)\s\*\//)[1];
+}
+
+String.prototype.format = function(){    
+    var args = arguments;    
+    return this.replace(/\{(\d+)\}/g,                    
+        function(m,i){    
+            return args[i];    
+        });    
+}    
+
+String.prototype.times = function(n) {
+    return Array.prototype.join.call({length:n+1}, this);
+};
+
+var a = "I Love {0}, and You Love {1},Where are {0}!";    
+//alert(shtml.format("You",22));
+//取得单个ip文本 最大长度
+var im=0;
+var im1=(st.length+"").length;
+for(var i in st){
+	if(im<st[i].length){
+		im=st[i].length;
+	}	
+}
+//alert(im);
+//alert(im1);
+var in1=0;
+for(var i in st){
+	var id=im-st[i].length;
+	//st[i]=
+	//alert(shtml.format(st[i],i));
+	var i1=(parseInt(i,10)+parseInt(1,10));
+	//alert(i1);
+	var a1=(i1)+" ".times(im1-(i1+"").length);
+	//alert(a1);
+	document.write ("<a style=color:red;font-size:16px;>{0}:</a><a href='http://{1}' target=a{2} style=text-align:center;font-size:12px;>{3} </a>   ".format(a1,st[i],i,st[i]+"#".times(im-st[i].length))) ;//shtml.format(s[i],s[i],s[i])
+	in1=parseInt(in1,10)+parseInt(1,10);
+	if(in1%5 == 0){
+		//alert(in1);
+		document.write ("<br>");
+	}
+}
+
+document.write ("<p></p>") ;
+
+for(var i in st){
+	//alert(shtml.format(st[i],i));
+	document.write (shtml.format(st[i],i,window.screen.width-30)) ;//shtml.format(s[i],s[i],s[i])
+}
+
+</script>
+
+<a href="#top"  style=color:red;font-size:66px >返回顶部</a>

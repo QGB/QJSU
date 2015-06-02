@@ -12,26 +12,14 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
-import frame.BX;
 
 import qgb.*;
 
 public class HttpRequest {
 	public static void main(String[] args) {
-		String str = BX.gsDomain;
 		// ���� GET ����
-		InputStream is = null;
-		try {
-			is = HttpRequest.get(str);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		String s = U.InputStreamToString(is, CharsetName.GST_UTF8);
-		System.out.println(s);
 
 
-		System.out.println(str);
 	}
 	
 	public static InputStream get_withException(String url) throws FileNotFoundException {
@@ -84,7 +72,7 @@ public class HttpRequest {
 
 		 try {
 		 if (in != null) {
-		 in.close();
+		// in.close();
 		 }
 		 } catch (Exception e2) {
 		 e2.printStackTrace();

@@ -16,10 +16,10 @@ public class F {
 //		str = ToHex(is);
 //		U.write("c.txt", str);
 		//U.print(Integer.valueOf());
-//		byte[] yb=hexToBytes("3031323334353637");
-//		U.print(new String(yb));
-//		U.print(toHexString(yb));
-		U.print(getFilesStringArray("d:/test/", ".txt"));
+		byte[] yb=hexToBytes("3031323334353637");
+		U.print(new String(yb));
+		U.print(bytesToHex(yb));
+	//	U.print(getFilesStringArray("d:/test/", ".txt"));
 	}
 	//////////////////////////////////////////////
 	/**
@@ -84,14 +84,18 @@ public class F {
 	public static String bytesToHex(byte[] ayb) {
 		StringBuilder sb=new StringBuilder();
 		for (int i = 0; i < ayb.length; i++) {
-			Byte b = ayb[i];
-			if ( b>=0&&b<=0xf) {
-				sb.append( "0"+Integer.toString(b.intValue(), 16));
-			}else {
-				sb.append( Integer.toString(F.byteToint(b), 16));
-			}
+			//Byte b = ayb[i];
+			sb.append( byteToHex(ayb[i]));	
 		}
 		return sb.toString().toUpperCase();
+	}
+	
+	public static String byteToHex(Byte ab) {
+		if ( ab>=0&&ab<=0xf) {
+			return ("0"+Integer.toString(ab.intValue(), 16));
+		}else {
+			return (Integer.toString(F.byteToint(ab), 16));
+		}
 	}
 	
 	public static String name(String ast) {

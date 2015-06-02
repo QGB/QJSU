@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.zip.DataFormatException;
 
 import org.jsoup.Jsoup;
@@ -12,18 +13,33 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import qgb.*;
+import qgb.CharsetName;
+import qgb.F;
+import qgb.T;
+import qgb.U;
 import qgb.net.Get;
 import qgb.net.HttpRequest;
+import qgb.net.QNet;
+import qgb.project.discuz.Bbs_kuaibo_com;
 
 public class Time1024 {
-	static String gsDomain="http://woge.xyz/";
-	private static int giv=9;
+	static String gsDomain="http://cl.bearhk.info/";
+	private static int giv=6;
 	
 	
 	public static void main(String[] args) {
-		U.print();
-		U.setProxy("172.17.5.27","808");
+		//U.print();
+//		try {
+//			//Jsoup.parse(new URL(gsDomain), 4444);
+//			InputStream is=HttpRequest.get(gsDomain);
+//			String s= U.InputStreamToString(is, CharsetName.GST_GB2312) ;
+//			//is.reset();
+//			U.print(s);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		U.exit();
+		//U.setProxy("172.17.5.27","808");
 		String surl=gsDomain+"thread0806.php?fid=8&search=&page=";
 		
 		for (int i = 1; i < 99; i++) {
@@ -40,7 +56,9 @@ public class Time1024 {
 		U.print(asurl);
 		Document doc = null;
 		try {
-			doc=Get.jsoupDoc(asurl, 4, 2222);
+			InputStream is=HttpRequest.get(asurl);
+			doc=Jsoup.parse(is, CharsetName.GST_GB2312, asurl);
+			//doc=Get.jsoupDoc(asurl, 4, 2222);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -84,7 +102,9 @@ public class Time1024 {
 		U.print(asurl);
 		Document doc = null;
 		try {
-			doc=Get.jsoupDoc(asurl, 4, 2222);
+			InputStream is=HttpRequest.get(asurl);
+			doc=Jsoup.parse(is, CharsetName.GST_GB2312, asurl);
+			//doc=Get.jsoupDoc(asurl, 4, 2222);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,20 +116,26 @@ public class Time1024 {
 		String[] ys=doc.select("div[class=tpc_content]").get(0).html().split("<input");
 		//eall=eall.select("input");
 		for (int i = 0; i < ys.length; i++) {
-			String surl=T.sub(ys[i],"src=\"","\"");
+			final String surl=T.sub(ys[i],"src=\"","\"");
 			if (surl.length()<5)continue;
 			
-		 	String sf="/climg/"+ T.subLast(surl,"/");
+		 	final String sf="/climg/"+ T.subLast(surl,"/");
 			if (F.isExist(sf)) {
 				continue;
 			}
 			
-			try {
-				U.write(sf, Get.urlfile(surl));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			U.print(surl);
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						U.write(sf, Get.urlfile(surl));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					U.print(surl);					
+				}
+			}).start();
+
 		}
 		
 
@@ -123,10 +149,6 @@ public class Time1024 {
 	}
 
 	
-	
-	
 
-	
-	
 	
 }

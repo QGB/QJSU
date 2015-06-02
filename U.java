@@ -13,6 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
@@ -55,12 +57,48 @@ public final class U {
 
 	// /////////////////////////////////////////////////////////
 	public static void main(String[] args) throws Exception {
-		U.print(U.getCmdToRun());
+		U.print(objToHex(U.class));
+		U.write("u.c", objSerialize(U.class));
 		//main(null);
 	}
+	public static byte[] objSerialize(Object ao) {
+		byte[] yb;
+		try {
+			// FileOutputStream fos = new FileOutputStream(U.autoPath("u.obj"));
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			oos.writeObject(ao);
+			oos.close();
+			return bos.toByteArray();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Object objDeserialize(byte[] ayb) {
+		Object o;
+		try {
+			// FileOutputStream fos = new FileOutputStream(U.autoPath("u.obj"));
+			ObjectInputStream ois=new ObjectInputStream(U.BytesToInputStream(ayb));
+			o= ois.readObject();
+			ois.close();
+			return o;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
 	
+	public static String objToHex(Object ao) {
+		return F.bytesToHex(objSerialize(ao));
+	}
+	
+	public static Object HexToObj(String as) {
+		return objDeserialize(F.hexToBytes(as));
+	}
 
-
+///////////////////////////////////////////////////////////////////
 	public static String getPublicClassName(String asJavaCode) {
 		String st = Regex.getFirst(Regex.GS_PubClassName, asJavaCode);
 		// st=T.replaceAll(st, "  ", " ");
@@ -147,7 +185,7 @@ public final class U {
 	// public static String getCurrentClassName() {
 	// return getCurrentClass().getName();
 	// }
-	/** TODO:閻偄鍤栭懗銈忔嫹 */
+	/** TODO:鐫嚖鑳わ拷 */
 	public static Method getCurrentMethod() {
 		StackTraceElement[] yste = Thread.currentThread().getStackTrace();
 		if (yste.length < 2) {
@@ -192,7 +230,7 @@ public final class U {
 		if (yste.length < 2) {
 			return null;
 		}
-		/** 鐠囨瑱鎷�*/
+		/** 璇欙拷 */
 		String str = yste[yste.length - 1 - 1].toString();
 		// print(yste);
 		StringBuilder sb = new StringBuilder("\n");
@@ -304,9 +342,9 @@ public final class U {
 
 	// ////////////////////////////////////////////////////////
 	public static String getCurrentTime() {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 閼哄倿娼诲锟�
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 鑺傞潻寮�
 		// System.out.println(df.format(new Date()));// new
-		// Date()娑撳搫褰囬崜宥囬兇缂佺喐妞�
+		// Date()涓哄彇鍓嶇郴缁熸椂
 		return df.format(new Date());
 	}
 
@@ -369,7 +407,7 @@ public final class U {
 					U.print("%s=\"%s\"", astName + "." + yf[i].getName(), sta);
 					bool = true;
 				}
-				/** TODO 閺冪姵纭舵潏鎾冲毉null閸婏拷**/
+				/** TODO 鏃犳硶杈撳嚭null鍊�**/
 				// else {
 				// U.print("%s=null", astName + "." + yf[i].getName());
 				// }
@@ -408,10 +446,23 @@ public final class U {
 		System.out.println(aoa);
 	}
 
-	public static void print(Collection<?> aoa) {
-		for (Object o : aoa) {
-			System.out.println(o.toString());
+	public static void print(Collection<?> ac) {
+		if (ac == null) {
+			return;
 		}
+	
+		String stFormat = "[%-" + get_intDigit(ac.size()) + "s]=%s";
+		int i=0;
+		String sT="?";
+		for (Object o : ac) {
+			U.print(stFormat, i++, o.toString());
+			if (i==1) {
+				sT=o.getClass().getName();
+			}
+		}
+		U.print("Collection<%s>.size()=%d",sT, i);
+		
+		
 	}
 
 	public static void print(int[] ayi) {
@@ -427,6 +478,35 @@ public final class U {
 		}
 	}
 
+	
+	public static void print(byte[] ay) {
+		if (ay == null) {
+			return;
+		}
+		if (ay.length > 0) {
+			pt(T.format( "%s[%d]", "byte", ay.length));
+		}
+		String stFormat = "%-" + get_intDigit(ay.length/16) + "s|";
+		final int im=ay.length;
+		int iline=1;
+		for (int i = 0; i <im ; i++) {
+			if(i%16==0){
+				pt("\n");
+				pt(T.format(stFormat,iline++));
+			}
+			pt(F.byteToHex(ay[i])+" ");
+		//	print(stFormat, i, ay[i]);
+		}
+		pt("\n"+T.repeat(64,"-")+"\n");
+		pt(T.format(stFormat,0));
+		byte[] yb={1,2,3,4,5,6,7,8,9,0x10,0x11,0x12,0x13,0x14,0x15,0x16};
+		for (int i = 0; i < 16; i++) {
+			pt(F.byteToHex(yb[i])+" ");
+		}
+		pt("\n");
+	}
+
+	
 	public static void print(char[] ayi) {
 		if (ayi == null) {
 			return;
@@ -525,7 +605,7 @@ public final class U {
 	public static void write(String ast_filename, String ast_text) {
 		FileWriter fw = null;
 		try {
-			fw = new FileWriter(U.autoPath(ast_filename));
+			fw = new FileWriter(autoPath(ast_filename));
 			fw.write(ast_text);
 			fw.flush();
 			// tprint(ast_text);
@@ -542,14 +622,14 @@ public final class U {
 	}
 
 	/**
-	 * 缁叉Ξt_filename .婢剁繝璐熼崜宥堢熅 </p> modified at 2014-07-23 02:08:51 modified at
-	 * 2014-07-31 03:00:19 TODO:mac os 闁炬澘鍤栫悰妞﹀稄鎷�
+	 * 绲榮t_filename .澶翠负鍓嶈矾 </p> modified at 2014-07-23 02:08:51 modified at
+	 * 2014-07-31 03:00:19 TODO:mac os 閾板嚖琛椦嶏拷
 	 **/
 	public static String autoPath(String ast_filename) {
 		if (ast_filename.startsWith(".")) {
 			return ast_filename;
 		}
-		if (isFullPath(ast_filename)) {// 娓氥儳銆嬬憴鎺戝殩娑撳搫鍙忕捄锟�
+		if (isFullPath(ast_filename)) {// 渚ョ》瑙掑嚖涓哄叏璺�
 			makeDirs(ast_filename);
 			return ast_filename;
 		} else {
@@ -602,10 +682,10 @@ public final class U {
 				// + ",InputStream)");
 			}
 
-			// 閸欘偆顣渚亾閸欘偉鎻敓锟�
+			// 鍙楗侯偓鍙揪锟�
 			bos.flush();
 
-			// 閹搭亝鍞�
+			// 鎴唻
 			// bufferedInputStream.close();
 			bos.close();
 			abis.close();
@@ -626,7 +706,7 @@ public final class U {
 	public static void makeDirs(String fileName) {
 		File f = new File(fileName);
 		// U.print("%s isD %b",fileName,F.isDirectory(fileName));
-		/** 娴ｇ竵ile.isDirectory()閸欘偉顔愭稉锟藉Ν绾板鑼庣涵鐤瀾閸戙倓璐熼惄顔肩秿 **/
+		/** 浣縁ile.isDirectory()鍙涓�妭纰変茎纭疯鍑や负鐩綍 **/
 		if (F.isDirectory(fileName) == false) {
 			f = f.getParentFile();
 			if (f == null) {
@@ -701,7 +781,7 @@ public final class U {
 	 * @see qgb.U.autoPath
 	 */
 	public static BufferedInputStream readBis(String fileName) {
-		File file = new File(U.autoPath(fileName));
+		File file = new File(autoPath(fileName));
 
 		FileInputStream fis = null;
 		try {
@@ -722,7 +802,7 @@ public final class U {
 	 */
 	public static InputStream readIs(String fileName)
 			throws FileNotFoundException {
-		File file = new File(U.autoPath(fileName));
+		File file = new File(autoPath(fileName));
 
 		FileInputStream fis = null;
 		try {
@@ -839,7 +919,7 @@ public final class U {
 	}
 
 	public static void delFile(String asPath) {
-		File file = new File(U.autoPath(asPath));
+		File file = new File(autoPath(asPath));
 		if (file.exists()) {
 			if (file.delete() == false) {
 				U.notify("U.delFile error file is not  deleted!"+autoPath(asPath));
@@ -859,7 +939,7 @@ public final class U {
 	/*********** setOutStream *************************/
 	public static void setOutStream(String ast) {
 		try {
-			PrintStream ps = new PrintStream(U.autoPath(ast),
+			PrintStream ps = new PrintStream(autoPath(ast),
 					CharsetName.GST_UTF8);
 			System.setOut(ps);
 		} catch (FileNotFoundException e) {
@@ -871,7 +951,7 @@ public final class U {
 
 	public static void setErrStream(String ast) {
 		try {
-			PrintStream ps = new PrintStream(U.autoPath(ast),
+			PrintStream ps = new PrintStream(autoPath(ast),
 					CharsetName.GST_UTF8);
 			System.setErr(ps);
 		} catch (FileNotFoundException e) {
@@ -959,7 +1039,7 @@ public final class U {
 		return stp;
 	}
 
-	/** 閺�棳ac oswindows **/
+	/** 鏀痬ac oswindows **/
 	public static String getSource(Class<?> aClass) {
 		String stp = aClass.getProtectionDomain().getCodeSource().getLocation()
 				.toString();
