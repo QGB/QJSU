@@ -83,11 +83,10 @@ public class Cmd {
     }
  
  public static void main(String[] args) throws Exception {
-     //System.out.println(""+Cmd.getMACAddress());//��������ַ
-//	 JDBC_Test.getConnection();
-//	 JDBC_Test.SQL_execute("CREATE TABLE ccsu_ip3 (st_sld char(20),st_ip char(15))");
-//	 String st_input=U.readSt("ysld.txt");
-	 //U.print(st_input);
+
+	 
+	 U.print(U.exec("cmd /c cyg&nc -h"));
+	 U.exit();
 	 String[] yst="www|txb|bgs|zfx|zpb|news|jszx|nic|kjc|bkpg|zsjy|jcxy|jgx|ksc|yyx|jdx|qzlx|jwc".split("\\|");
 	 //Y.delMuti(yst);
 	 U.print(yst);

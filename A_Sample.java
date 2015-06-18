@@ -2,7 +2,7 @@ package qgb;
 
 public class A_Sample {
 	public static void main(String[] args) throws Exception {
-		U.print(Decipher("@a"));
+		U.print(Decipher("Mn,Jc%A\\y8Pa"));
 		U.exit();
 		String[]  yst=U.readSt("f1.txt").split(T.gsWinNewline);
 		
