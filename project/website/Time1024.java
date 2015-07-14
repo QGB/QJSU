@@ -1,12 +1,6 @@
 package qgb.project.website;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.util.zip.DataFormatException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,11 +13,9 @@ import qgb.T;
 import qgb.U;
 import qgb.net.Get;
 import qgb.net.HttpRequest;
-import qgb.net.QNet;
-import qgb.project.discuz.Bbs_kuaibo_com;
 
 public class Time1024 {
-	static String gsDomain="http://cl.bearhk.info/";
+	static String gsDomain="http://cl.1024live.org/";
 	private static int giv=6;
 	
 	
@@ -39,7 +31,7 @@ public class Time1024 {
 //			e.printStackTrace();
 //		}
 //		U.exit();
-		//U.setProxy("172.17.5.27","808");
+		U.setProxy("172.28.5.238","8087");
 		String surl=gsDomain+"thread0806.php?fid=8&search=&page=";
 		
 		for (int i = 1; i < 99; i++) {

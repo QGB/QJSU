@@ -1,18 +1,23 @@
 package qgb;
 
+import qgb.net.QNet;
+
 public class A_Sample {
 	public static void main(String[] args) throws Exception {
-		U.print(Decipher("Mn,Jc%A\\y8Pa"));
+		//U.print(Decipher("Mk*t2Pa"));
+		U.write("reg.html",QNet.html("http://www.reg007.com/search?q=759551388-at-qq.com"));
 		U.exit();
-		String[]  yst=U.readSt("f1.txt").split(T.gsWinNewline);
 		
-		String[]  ystN=U.readSt("f.txt").split(T.gsWinNewline);
-		U.print(yst.length+"|"+ystN.length);
+		String[]  yst=U.readSt("d.txt").split(T.gsWinNewline);
+		
+		//String[]  ystN=U.readSt("f.txt").split(T.gsWinNewline);
+		//U.print(yst.length+"|"+ystN.length);
 		for (int i = 0; i < yst.length; i++) {
-			//String spw=T.subLast(yst[i],"	");
-			//spw=Decipher(spw);
+			
+			String spw=T.subLast(yst[i],":");
+			spw=Decipher(spw);
 			//U.msgbox(spw);
-			yst[i]=ystN[i]+"|"+yst[i];
+			yst[i]=spw+":"+yst[i];
 		}
 		
 		U.write("f2.txt", Y.ArrayToStr(yst, T.gsWinNewline));

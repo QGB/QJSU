@@ -132,6 +132,10 @@ public class T {
 		return lineWrap(new StringBuilder(ast), aiColumns);
 	}
 
+	public static String delChars(String stW, String asyc) {
+		return delChars(stW, asyc.toCharArray());
+	}
+	
 	public static String delChars(String stW, char... ayc) {
 		if (ayc.length<1||stW.length()<1)return stW;
 		StringBuilder sb=new StringBuilder(stW);

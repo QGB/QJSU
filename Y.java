@@ -2,11 +2,24 @@ package qgb;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+
+import qgb.annotation.tested;
 /**QGB's java basic array method**/
 public class Y {  
   
     public static void main(String [] args) {  
+    	ArrayList<String> als=new ArrayList<>();
+    	for (int i = 0; i < 12; i++) {
+    			als.add("aa"+i+"bb");
+		}
+    	//U.print(als);
+    	U.print(ListToStr(als, "\n"));
+    	
+    	
+    	
+    	
     	if (true) {
 			return;
 		}
@@ -210,6 +223,17 @@ public class Y {
 			str=str+ayst[i]+ast_separator;
 		}
 		return str;
+	}
+	@tested//2015-06-26 23:51:09
+	public static String ListToStr(Iterable<?> ay, String ast_separator) {
+		StringBuilder sb=new StringBuilder();
+		/**Each call to ay.iterator() returns a initialization Iterator*/
+		Iterator<?> it=ay.iterator();
+		while (it.hasNext()) {
+			sb.append(it.next().toString()+ast_separator);
+			//U.msgbox(sb.toString());
+		}
+		return sb.toString();
 	}
 	/**自动剔除""与null值</br>
 	 * Windows 换行符 \r\n**/

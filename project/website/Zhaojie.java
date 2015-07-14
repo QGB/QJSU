@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,25 +18,27 @@ import qgb.net.Get;
 import qgb.net.HttpRequest;
 import qgb.net.QNet;
 
-public class DoubanBook {
-	final static String gsKeyWord= "linux";
-	//////////////////////////////////////////
-	public static Connection gConn;
-	public static Statement gStat;
+public class Zhaojie {
+	public final static String gsDomain="http://blog.zhaojie.me";
 	/** TODO:DB Test */
-	final private static String gsDbName = U.autoPath("Douban.db"); // "./mh.db";
+	final private static String gsDbName = U.autoPath("zhaojie.db"); // "./mh.db";
 	final static String gsCid = "id";
-	final static String gsCTitle = "stitle";
-	final static String gsCDetail = "sdetail";
-
-	final static String gsCRating = "Rating";
+	final static String gsCVisits = "v";
+//	final static String gsCTitle = "stitle";
+//	final static String gsCDetail = "sdetail";
+//
+//	final static String gsCRating = "Rating";
 	final static String gsCUrl = "url";
 	final static String gsCiComment = "comment";
-	final static String gsTableBook =T.delChars(gsKeyWord, "\"':%/");
+	final static String gsTable = "zj";
+	
+	static Connection gConn;
+	static Statement gStat;
 	static PreparedStatement prep;
 	static String sql = T.format(
-			"INSERT INTO %s(%s,%s,%s  ,%s) VALUES(?,?,?  ,?);", gsTableBook,
-			gsCTitle, gsCDetail, gsCRating, gsCUrl);
+			"INSERT INTO %s(%s,%s,%s  ) VALUES(?,?,? );", gsTable,
+			 gsCVisits, gsCiComment, gsCUrl);
+	
 
 	static {
 		try {
@@ -45,7 +48,9 @@ public class DoubanBook {
 					"");
 			gConn.setAutoCommit(true);
 			gStat = gConn.createStatement();
-			createTable();
+			if (!F.isExist(gsDbName)) {
+				createTable();
+			}
 			prep = gConn.prepareStatement(sql);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,13 +64,16 @@ public class DoubanBook {
 
 	public static void main(String[] args) throws ClassNotFoundException {
 		// U.print(gConn);
-		
-		Class.forName(DoubanBook.class.getName());
-		String surl = "http://www.douban.com/tag/"+gsKeyWord+"/book?start=";
-		for (int i = 0; i <=615; i=i+15) {
-			nextList(surl+i);
-		}
+		String[] ys=U.readSt("zjl.txt").split("\n");
 
+		Class.forName(Zhaojie.class.getName());
+		//String surl = "http://blog.zhaojie.me/";
+		
+		for (int i = 0; i < ys.length; i++) {
+			nextList(gsDomain+ys[i]);			
+		}
+		
+			
 		// U.print(doc.html());
 	}
 
@@ -85,27 +93,28 @@ public class DoubanBook {
 		if (doc == null) {
 			return "";
 		}
-		// U.write("dou.html",doc.html());
-		// U.msgbox();
-		Elements eall = doc.select("div[class=mod book-list]");
+		// U.write(gsTable+".html",doc.html());
+		//U.msgbox();
+		Elements eall = doc.select("div[id=content]");
 
-		eall = eall.select("dd");
+		eall = eall.select("div[class=post]");
 		//
-		String sDetail = "", sRating = "", sTitle = "", sUrl = "";
+		String  sC = "", sV = "", sUrl = "";
 		for (Element tr : eall) {
 			//U.print(tr.html());
 			//U.msgbox();
 
-			sUrl = tr.html();
-			sUrl = T.sub(sUrl, "href=\"", "\"").trim();
+			sUrl = tr.select("h2").html();
+			sUrl = gsDomain+ T.sub(sUrl, "href=\"", "\"").trim();
 
-			sTitle = tr.select("a[class=title]").text().trim();
-
-			sDetail = tr.select("div[class=desc]").text().trim();
-
-			sRating=tr.select("span[class=rating_nums]").text().trim();
-
-			insertDB(sTitle, sDetail, sRating, sUrl);
+			sV = tr.select("small").text().trim();
+			sV=T.sub(sV, ", ", "visits").trim();
+			
+			
+			sC=tr.select("li[class=icon_comment icon_r]").text().trim();
+			sC=T.sub(sC,"", "Comments");
+			//U.msgbox(sC);
+			insertDB(sV,  sC, sUrl);
 
 		}
 		// U.msgbox();
@@ -113,15 +122,13 @@ public class DoubanBook {
 		return "";
 	}
 
-	private static void insertDB(String asTitle, String asDetail,
-			String asRating, String asUrl) {
+	private static void insertDB(String asV, String asC,String asUrl) {
 	//	 U.msgbox("t=%s,d=%s,r=%s,u=%s",asTitle,asDetail,asRating,asUrl);
 		try {
 			prep = gConn.prepareStatement(sql);
-			prep.setString(1, asTitle);
-			prep.setString(2, asDetail);
-			prep.setString(3, asRating);
-			prep.setString(4, asUrl);
+			prep.setString(1, asV);
+			prep.setString(2, asC);
+			prep.setString(3, asUrl);
 
 			prep.execute();
 		} catch (SQLException e) {
@@ -177,13 +184,10 @@ public class DoubanBook {
 	private static void createTable() {
 		String sql = "";
 		try {
-			sql = T.format("create table %s(", gsTableBook);
+			sql = T.format("create table %s(", gsTable);
 			sql = sql
-					+ T.format(
-							"%s integer,%s integer,%s char(22) ,%s char(222) ,%s char(3),%s char(21)"
-									+ ",PRIMARY KEY (%s));", gsCid,
-							gsCiComment, gsCTitle, gsCDetail, gsCRating,
-							gsCUrl, gsCid);
+					+ T.format("%s integer,%s integer,%s integer,%s char(22) ,PRIMARY KEY (%s));", gsCid,
+							gsCVisits,gsCiComment, 	gsCUrl, gsCid);
 			U.msgbox(sql);
 			gStat.executeUpdate(sql);
 
